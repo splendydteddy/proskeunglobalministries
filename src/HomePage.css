@@ -277,19 +277,27 @@ section { padding: var(--space-6) var(--space-4); }
 }
 .leader-card:hover { border-color: var(--gold); transform: translateY(-4px); }
 
-.avatar {
-  width: 56px;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.avatar-container {
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--gold), var(--gold-bright));
-  color: var(--navy-deep);
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.1rem;
+  overflow: hidden;
   margin-bottom: var(--space-2);
+  border: 2px solid var(--gold);
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.25);
+  background: var(--navy-deep);
+}
+
+.pastor-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.leader-card:hover .pastor-img {
+  transform: scale(1.06);
 }
 
 .role { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
@@ -342,6 +350,29 @@ section { padding: var(--space-6) var(--space-4); }
 .cell-card h3 { font-size: 1.05rem; margin-bottom: 0.3em; }
 .cell-card p { font-size: 0.88rem; }
 
+.cell-card.clickable {
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.click-hint {
+  display: inline-block;
+  margin-top: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  font-weight: 600;
+  transition: transform 0.2s ease;
+}
+
+.cell-card.clickable:hover .click-hint {
+  transform: translateX(4px);
+  color: var(--gold-bright);
+}
+
 /* Media Section */
 .media-section { max-width: var(--max-width); margin: 0 auto; }
 
@@ -376,43 +407,6 @@ section { padding: var(--space-6) var(--space-4); }
 .giving-card .icon { font-size: 1.8rem; margin-bottom: var(--space-2); display: block; }
 .giving-card h3 { font-size: 1.2rem; margin-bottom: 0.6em; color: var(--gold-bright); }
 .giving-card p { font-size: 0.95rem; margin-bottom: 0.3em; }
-
-/* Counseling Spotlight Block */
-.counseling-spotlight {
-  max-width: 600px;
-  margin: 0 auto var(--space-4);
-  background: linear-gradient(135deg, var(--royal), var(--navy-deep));
-  border: 1px solid var(--gold);
-  border-radius: var(--radius-lg);
-  padding: var(--space-3) var(--space-4);
-  text-align: center;
-  box-shadow: 0 10px 30px -10px var(--gold-soft);
-  transition: transform 0.25s ease, border-color 0.25s ease;
-}
-
-.counseling-spotlight:hover {
-  transform: translateY(-3px);
-  border-color: var(--gold-bright);
-}
-
-.counseling-spotlight .recap-tag {
-  color: var(--gold-bright);
-}
-
-.counseling-spotlight h3 {
-  font-size: 1.35rem;
-  color: var(--white);
-  margin: 0.3em 0 0.2em;
-}
-
-.counseling-spotlight p {
-  font-size: 0.95rem;
-  color: var(--white-dim);
-}
-
-.counseling-spotlight p strong {
-  color: var(--gold);
-}
 
 /* Contact Form Section */
 .contact-section { max-width: var(--max-width); margin: 0 auto; }
@@ -478,6 +472,110 @@ section { padding: var(--space-6) var(--space-4); }
   font-size: 0.9rem;
 }
 
+/* Modals (Sunday Service & House Cells) */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(6, 15, 38, 0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2);
+  animation: fadeIn 0.25s ease-out;
+}
+
+.modal-content {
+  position: relative;
+  background: var(--royal);
+  border: 1px solid var(--gold);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  max-width: 540px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  animation: modalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1.2rem;
+  background: transparent;
+  border: none;
+  color: var(--white-dim);
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+  color: var(--gold-bright);
+}
+
+.modal-subtitle {
+  color: var(--gold);
+  font-size: 0.9rem;
+  margin-top: 0.3em;
+  margin-bottom: var(--space-3);
+}
+
+.modal-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.modal-gallery img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--royal-line);
+}
+
+.modal-address {
+  margin: 0.5em 0 var(--space-3);
+  font-size: 0.95rem;
+}
+
+.modal-directions-btn {
+  width: 100%;
+  text-align: center;
+}
+
+/* Cell-Specific Modal Content */
+.cell-modal-location {
+  color: var(--gold-bright);
+  font-weight: 600;
+  margin-top: 0.5em;
+  font-size: 1rem;
+}
+
+.cell-modal-details {
+  margin-top: var(--space-2);
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.cell-modal-time-box {
+  margin-top: var(--space-3);
+  background: var(--navy-deep);
+  border-left: 3px solid var(--gold);
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+}
+
+.cell-modal-time-box p {
+  color: var(--white);
+  font-size: 0.88rem;
+}
+
 /* Footer Section */
 .site-footer {
   background: var(--navy-deep);
@@ -519,6 +617,17 @@ section { padding: var(--space-6) var(--space-4); }
 }
 .footer-bottom p { font-size: 0.8rem; color: var(--slate); }
 
+/* Keyframe Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translateY(20px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 /* Responsive Breakpoints */
 @media (max-width: 860px) {
   .nav-links { display: none; }
@@ -549,10 +658,12 @@ section { padding: var(--space-6) var(--space-4); }
 
 @media (max-width: 560px) {
   .schedule-grid { grid-template-columns: 1fr; }
+  .modal-gallery { grid-template-columns: 1fr; }
+  .modal-content { padding: var(--space-3); }
 }
 
 /* Reduced Motion Accessibility */
 @media (prefers-reduced-motion: reduce) {
   .hero-section::before { animation: none; }
-  .btn-primary:hover, .btn-light:hover, .leader-card:hover, .cell-card:hover, .giving-card:hover, .counseling-spotlight:hover { transform: none; }
+  .btn-primary:hover, .btn-light:hover, .leader-card:hover, .cell-card:hover, .giving-card:hover { transform: none; }
 }

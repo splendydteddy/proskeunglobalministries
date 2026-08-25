@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './HomePage.css';
 
+// Tuesday Counselling removed from Weekly Schedule
 const scheduleData = [
   { day: 'Monday', title: 'General Fasting Day', type: 'Spiritual Discipline', time: 'All Day' },
-  { day: 'Tuesday', title: 'Pastoral Counseling', type: 'One-on-One Session', time: 'At The Proskeun Center', highlight: true },
   { day: 'Wednesday', title: 'Midweek Service & Bible Study', type: 'Word & Worship', time: '5:00 PM – 7:00 PM' },
   { day: 'Thursday', title: 'Home Cell Meetings', type: 'Fellowship', time: '4:00 PM – 5:00 PM' },
   { day: 'Friday', title: 'Prayer Session', type: 'Intercession', time: '5:00 PM – 6:00 PM' },
@@ -12,11 +12,31 @@ const scheduleData = [
 ];
 
 const cellsData = [
-  { name: '19th Street Cell', location: '19th Street Center' },
-  { name: 'Uwasota Cell', location: 'Uwasota Axis' },
-  { name: 'UNIBEN Cell', location: 'Campus Community' },
-  { name: 'Precious Palm Cell', location: 'Precious Palm Royal Hotel Area' },
-  { name: 'Uselu Cell', location: 'Uselu Axis' },
+  { 
+    name: '19th Street Cell', 
+    location: '19th Street Center', 
+    details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Join us for powerful word study and fellowship every Thursday.' 
+  },
+  { 
+    name: 'Uwasota Cell', 
+    location: 'Uwasota Axis', 
+    details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' 
+  },
+  { 
+    name: 'UNIBEN Cell', 
+    location: 'Campus Community', 
+    details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco.' 
+  },
+  { 
+    name: 'Precious Palm Cell', 
+    location: 'Precious Palm Royal Hotel Area', 
+    details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse.' 
+  },
+  { 
+    name: 'Uselu Cell', 
+    location: 'Uselu Axis', 
+    details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Excepteur sint occaecat cupidatat non proident, sunt in culpa.' 
+  },
 ];
 
 const faqData = [
@@ -29,16 +49,16 @@ const faqData = [
     a: 'Believers\' Institute starts at 7:30 AM, followed immediately by the main Glorious Service.'
   },
   {
-    q: 'When can I meet with a pastor for counseling?',
-    a: 'Counseling sessions hold every Tuesday at The Proskeun Center. You can also send a request through our prayer & counseling form.'
-  },
-  {
     q: 'How do I join a House Cell near me?',
     a: 'Check our House Cell Centers list above to find a location in your axis, or send us a message through the contact form.'
   }
 ];
 
 const HomePage = () => {
+  // Modal State Controls
+  const [showSundayModal, setShowSundayModal] = useState(false);
+  const [selectedCell, setSelectedCell] = useState(null);
+
   return (
     <div className="church-site">
       <nav className="navbar">
@@ -61,7 +81,7 @@ const HomePage = () => {
         </ul>
 
         <div className="nav-cta">
-          <a href="#schedule" className="btn-primary">Join Us Sunday</a>
+          <button onClick={() => setShowSundayModal(true)} className="btn-primary">Join Us Sunday</button>
         </div>
       </nav>
 
@@ -74,7 +94,7 @@ const HomePage = () => {
             Experience dynamic worship, sound apostolic teaching, and the tangible presence of God. Join a vibrant community moving in spiritual fervor and joy.
           </p>
           <div className="hero-actions">
-            <a href="#schedule" className="btn-primary">Join Us This Sunday</a>
+            <button onClick={() => setShowSundayModal(true)} className="btn-primary">Join Us This Sunday</button>
             <a href="#cells" className="btn-secondary">Find a Cell Near You</a>
           </div>
         </div>
@@ -88,13 +108,12 @@ const HomePage = () => {
             <h3>Concluded: The Ablaze Conference</h3>
             <p>Catch up on powerful ministrations, testimonies, and moments from our recent gathering.</p>
           </div>
-          <div className="recap-action" style={{ display: 'flex', alignItems: 'center' }}>
+          <div className="recap-action">
             <a 
               href="https://www.tiktok.com/@proskeunministry?_r=1&_t=ZS-98xLb1Id5xX" 
               target="_blank" 
               rel="noreferrer" 
               className="btn-light"
-              style={{ display: 'inline-block', opacity: 1, visibility: 'visible' }}
             >
               Watch Highlights →
             </a>
@@ -102,6 +121,7 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* LEADERSHIP SECTION WITH IMAGE HOLDERS */}
       <section id="about" className="about-section">
         <div className="section-header">
           <h2>Our Vision & Leadership</h2>
@@ -110,14 +130,28 @@ const HomePage = () => {
 
         <div className="leadership-cards">
           <div className="leader-card">
-            <div className="avatar" aria-hidden="true">PE</div>
+            <div className="avatar-container">
+              <img 
+                src="/assets/pastor-osas.jpg" 
+                alt="Pastor Osasumwen Eghianruwa" 
+                className="pastor-img"
+                onError={(e) => { e.target.onerror = null; e.target.src="https://via.placeholder.com/150?text=Pastor+Osas"; }} 
+              />
+            </div>
             <span className="role">Head Pastor</span>
             <h3>Pastor Osasumwen Eghianruwa</h3>
             <p>Leading Proskeun Global Ministry with apostolic passion, raising believers operating in spiritual fire, joy, and structural maturity.</p>
           </div>
 
           <div className="leader-card">
-            <div className="avatar" aria-hidden="true">PJ</div>
+            <div className="avatar-container">
+              <img 
+                src="/assets/pastor-joy.jpg" 
+                alt="Pastor Joy Eghianruwa" 
+                className="pastor-img"
+                onError={(e) => { e.target.onerror = null; e.target.src="https://via.placeholder.com/150?text=Pastor+Joy"; }} 
+              />
+            </div>
             <span className="role">Resident Pastor</span>
             <h3>Pastor Joy Eghianruwa</h3>
             <p>Serving the body with grace, shepherding the local congregation, and driving key spiritual and administrative arms of the ministry.</p>
@@ -125,6 +159,7 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* WEEKLY SCHEDULE */}
       <section id="schedule" className="schedule-section">
         <div className="section-header">
           <h2>Weekly Worship Schedule</h2>
@@ -143,24 +178,30 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* CLICKABLE HOMECELLS SECTION */}
       <section id="cells" className="cells-section">
         <div className="section-header">
           <h2>House Cell Centers</h2>
-          <p>Every Thursday from 4:00 PM – 5:00 PM. Connect with a center near you.</p>
+          <p>Every Thursday from 4:00 PM – 5:00 PM. Click any center for full location details.</p>
         </div>
 
         <div className="cells-grid">
           {cellsData.map((cell) => (
-            <div key={cell.name} className="cell-card">
+            <div 
+              key={cell.name} 
+              className="cell-card clickable" 
+              onClick={() => setSelectedCell(cell)}
+            >
               <span className="icon" aria-hidden="true">📍</span>
               <h3>{cell.name}</h3>
               <p>Location: {cell.location}</p>
+              <span className="click-hint">View Directions →</span>
             </div>
           ))}
         </div>
       </section>
 
-      {/* UPDATED SERMONS & MEDIA SECTION */}
+      {/* MEDIA SECTION */}
       <section id="media" className="media-section">
         <div className="section-header">
           <h2>Sermons & Media</h2>
@@ -176,8 +217,7 @@ const HomePage = () => {
             href="https://t.me/YOUR_TELEGRAM_CHANNEL_LINK" 
             target="_blank" 
             rel="noreferrer" 
-            className="btn-primary"
-            style={{ backgroundColor: '#0088cc', borderColor: '#0088cc' }}
+            className="btn-telegram"
           >
             Join Telegram Channel 📲
           </a>
@@ -207,21 +247,6 @@ const HomePage = () => {
           <p>Connect with our pastoral team for guidance, prayer, and one-on-one counseling.</p>
         </div>
 
-        <div className="counseling-spotlight" style={{
-          backgroundColor: '#111827',
-          border: '1px solid #1f2937',
-          borderRadius: '12px',
-          padding: '1.5rem',
-          marginBottom: '2rem',
-          textAlign: 'center'
-        }}>
-          <span className="recap-tag" style={{ color: '#00f0ff' }}>In-Person Session</span>
-          <h3 style={{ margin: '0.5rem 0', fontSize: '1.25rem' }}>Counseling Holds Every Tuesday</h3>
-          <p style={{ margin: 0, color: '#9ca3af' }}>
-            Location: <strong>The Proskeun Center</strong>
-          </p>
-        </div>
-
         <form className="contact-form" onSubmit={(e) => e.preventDefault()}>
           <input type="text" placeholder="Full Name" required />
           <input type="email" placeholder="Email Address" required />
@@ -244,6 +269,48 @@ const HomePage = () => {
           ))}
         </div>
       </section>
+
+      {/* SUNDAY SERVICE MODAL */}
+      {showSundayModal && (
+        <div className="modal-overlay" onClick={() => setShowSundayModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="close-btn" onClick={() => setShowSundayModal(false)}>✕</button>
+            <h2>Join Us This Sunday</h2>
+            <p className="modal-subtitle">Starts 7:30 AM | Believers' Institute & Main Glorious Service</p>
+            
+            <div className="modal-gallery">
+              <img src="/assets/church-1.jpg" alt="Church Service" onError={(e) => { e.target.onerror = null; e.target.src="https://via.placeholder.com/300x200?text=Church+Interior"; }} />
+              <img src="/assets/church-2.jpg" alt="Church Worship" onError={(e) => { e.target.onerror = null; e.target.src="https://via.placeholder.com/300x200?text=Worship+Service"; }} />
+            </div>
+
+            <h3>Location & Directions</h3>
+            <p className="modal-address">📍 The Proskeun Center, Benin City, Edo State.</p>
+            <a 
+              href="https://maps.google.com/?q=Proskeun+Global+Ministry" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="btn-primary modal-directions-btn"
+            >
+              Get Directions on Google Maps📍
+            </a>
+          </div>
+        </div>
+      )}
+
+      {/* HOMECELL LOCATION MODAL */}
+      {selectedCell && (
+        <div className="modal-overlay" onClick={() => setSelectedCell(null)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="close-btn" onClick={() => setSelectedCell(null)}>✕</button>
+            <h2>{selectedCell.name}</h2>
+            <p className="cell-modal-location">📍 Location: {selectedCell.location}</p>
+            <p className="cell-modal-details">{selectedCell.details}</p>
+            <div className="cell-modal-time-box">
+              <p><strong>Meeting Time:</strong> Thursdays @ 4:00 PM – 5:00 PM</p>
+            </div>
+          </div>
+        </div>
+      )}
 
       <footer className="site-footer">
         <div className="footer-content">
