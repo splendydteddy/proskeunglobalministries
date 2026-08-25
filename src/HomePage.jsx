@@ -14,28 +14,33 @@ const scheduleData = [
 const cellsData = [
   { 
     name: '19th Street Cell', 
-    location: '19th Street Center', 
-    details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Join us for powerful word study and fellowship every Thursday.' 
+    location: '19th Street Center, BDPA, Ugbowo, Benin City', 
+    leader: 'Bro. Emmanuel',
+    details: 'A vibrant home cell focused on word study, intercession, and spiritual growth in the BDPA community.' 
   },
   { 
     name: 'Uwasota Cell', 
-    location: 'Uwasota Axis', 
-    details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' 
+    location: 'The Proskeun Center, 15 Nova Road, Opp Uwasota Busstop Ugbowo, Benin city.', 
+    leader: 'Pastor Chinonso',
+    inquiries: 'for inquiries, contact: +2347034539013'
   },
   { 
     name: 'UNIBEN Cell', 
-    location: 'Campus Community', 
-    details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco.' 
+    location: 'Behind Auditorium university of Benin,', 
+    leader: 'pastor Gershom',
+    inquiries: 'for inquiries, contact: +2348149413186' 
   },
   { 
     name: 'Precious Palm Cell', 
-    location: 'Precious Palm Royal Hotel Area', 
-    details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse.' 
+    location: 'Precious Palm Royal Hotel Area, Ugbowo', 
+    leader: 'Bro. Daniel',
+    details: 'Fostering tight-knit fellowship and apostolic teaching for young adults and families in the Precious Palm axis.' 
   },
   { 
     name: 'Uselu Cell', 
-    location: 'Uselu Axis', 
-    details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Excepteur sint occaecat cupidatat non proident, sunt in culpa.' 
+    location: 'Uselu Market Axis, Benin City', 
+    leader: 'Sis. Grace',
+    details: 'Dedicated to outreach, fervent intercession, and discipleship in the Uselu neighborhood.' 
   },
 ];
 
@@ -121,7 +126,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* LEADERSHIP SECTION WITH IMAGE HOLDERS */}
+      {/* LEADERSHIP SECTION WITH FULL BACKGROUND IMAGES */}
       <section id="about" className="about-section">
         <div className="section-header">
           <h2>Our Vision & Leadership</h2>
@@ -129,32 +134,44 @@ const HomePage = () => {
         </div>
 
         <div className="leadership-cards">
+          {/* Head Pastor Card */}
           <div className="leader-card">
-            <div className="avatar-container">
+            <div className="pastor-bg-container">
               <img 
-                src="/assets/pastor-osas.jpg" 
+                src="/IMG_9565.WEBP" 
                 alt="Pastor Osasumwen Eghianruwa" 
                 className="pastor-img"
-                onError={(e) => { e.target.onerror = null; e.target.src="https://via.placeholder.com/150?text=Pastor+Osas"; }} 
+                onError={(e) => { 
+                  e.target.onerror = null; 
+                  e.target.src="https://via.placeholder.com/400x500?text=Pastor+Osas"; 
+                }} 
               />
             </div>
-            <span className="role">Head Pastor</span>
-            <h3>Pastor Osasumwen Eghianruwa</h3>
-            <p>Leading Proskeun Global Ministry with apostolic passion, raising believers operating in spiritual fire, joy, and structural maturity.</p>
+            <div className="leader-card-content">
+              <span className="role">Head Pastor</span>
+              <h3>Pastor Osasumwen Eghianruwa</h3>
+              <p>Leading Proskeun Global Ministry with apostolic passion, raising believers operating in spiritual fire, joy, and structural maturity.</p>
+            </div>
           </div>
 
+          {/* Resident Pastor Card */}
           <div className="leader-card">
-            <div className="avatar-container">
+            <div className="pastor-bg-container">
               <img 
-                src="/assets/pastor-joy.jpg" 
+                src="/IMG_9572.WEBP" 
                 alt="Pastor Joy Eghianruwa" 
                 className="pastor-img"
-                onError={(e) => { e.target.onerror = null; e.target.src="https://via.placeholder.com/150?text=Pastor+Joy"; }} 
+                onError={(e) => { 
+                  e.target.onerror = null; 
+                  e.target.src="https://via.placeholder.com/400x500?text=Pastor+Joy"; 
+                }} 
               />
             </div>
-            <span className="role">Resident Pastor</span>
-            <h3>Pastor Joy Eghianruwa</h3>
-            <p>Serving the body with grace, shepherding the local congregation, and driving key spiritual and administrative arms of the ministry.</p>
+            <div className="leader-card-content">
+              <span className="role">Resident Pastor</span>
+              <h3>Pastor Joy Eghianruwa</h3>
+              <p>Serving the body with grace, shepherding the local congregation, and driving key spiritual and administrative arms of the ministry.</p>
+            </div>
           </div>
         </div>
       </section>
@@ -284,7 +301,7 @@ const HomePage = () => {
             </div>
 
             <h3>Location & Directions</h3>
-            <p className="modal-address">📍 The Proskeun Center, Benin City, Edo State.</p>
+            <p className="modal-address">📍 The Proskeun Center, 15 Nova Road, Opp Uwasota Busstop Ugbowo, Benin city.</p>
             <a 
               href="https://maps.google.com/?q=Proskeun+Global+Ministry" 
               target="_blank" 
@@ -303,11 +320,34 @@ const HomePage = () => {
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="close-btn" onClick={() => setSelectedCell(null)}>✕</button>
             <h2>{selectedCell.name}</h2>
-            <p className="cell-modal-location">📍 Location: {selectedCell.location}</p>
-            <p className="cell-modal-details">{selectedCell.details}</p>
-            <div className="cell-modal-time-box">
+            
+            <p className="cell-modal-location" style={{ marginTop: '0.8rem', fontSize: '0.98rem' }}>
+              📍 <strong>Location:</strong> {selectedCell.location}
+            </p>
+            
+            {selectedCell.leader && (
+              <p style={{ marginTop: '0.4rem', fontSize: '0.95rem', color: 'var(--gold-bright)' }}>
+                👤 <strong>Cell Leader:</strong> {selectedCell.leader}
+              </p>
+            )}
+
+            <p className="cell-modal-details" style={{ marginTop: '0.8rem', color: 'var(--white-dim)' }}>
+              {selectedCell.details}
+            </p>
+
+            <div className="cell-modal-time-box" style={{ marginTop: '1.2rem' }}>
               <p><strong>Meeting Time:</strong> Thursdays @ 4:00 PM – 5:00 PM</p>
             </div>
+
+            <a 
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedCell.location)}`} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="btn-primary modal-directions-btn"
+              style={{ marginTop: '1.2rem' }}
+            >
+              Open Location in Maps 🗺️
+            </a>
           </div>
         </div>
       )}
