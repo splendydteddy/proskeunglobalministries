@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './HomePage.css';
 
-// Tuesday Counselling removed from Weekly Schedule
 const scheduleData = [
   { day: 'Monday', title: 'General Fasting Day', type: 'Spiritual Discipline', time: 'All Day' },
   { day: 'Wednesday', title: 'Midweek Service & Bible Study', type: 'Word & Worship', time: '5:00 PM – 7:00 PM' },
   { day: 'Thursday', title: 'Home Cell Meetings', type: 'Fellowship', time: '4:00 PM – 5:00 PM' },
   { day: 'Friday', title: 'Prayer Session', type: 'Intercession', time: '5:00 PM – 6:00 PM' },
   { day: 'Saturday', title: 'Evangelism', type: 'Outreach', time: '4:00 PM' },
-  { day: 'Sunday', title: 'Glorious Service', type: 'Main Service', time: 'Starts 7:30 AM (Believers\' Institute)', highlight: true },
+  { day: 'Sunday', title: 'Glorious Service', type: 'Main Service', time: "Starts 7:30 AM (Believers' Institute)", highlight: true },
 ];
 
 const cellsData = [
@@ -51,7 +50,7 @@ const faqData = [
   },
   {
     q: 'What time does the Sunday Service start?',
-    a: 'Believers\' Institute starts at 7:30 AM, followed immediately by the main Glorious Service.'
+    a: "Believers' Institute starts at 7:30 AM, followed immediately by the main Glorious Service."
   },
   {
     q: 'How do I join a House Cell near me?',
@@ -60,29 +59,80 @@ const faqData = [
 ];
 
 const HomePage = () => {
-  // Modal State Controls
   const [showSundayModal, setShowSundayModal] = useState(false);
   const [selectedCell, setSelectedCell] = useState(null);
+  const [isNavOpen, setIsNavOpen] = useState(false);
+
+  // Smooth scroll handler & auto-closes mobile navigation drawer
+  const handleNavClick = (e, targetId) => {
+    e.preventDefault();
+    setIsNavOpen(false); // Close mobile drawer menu
+    
+    const targetElement = document.getElementById(targetId);
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  // Lock body scroll and handle Escape key listener when any modal is open
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setShowSundayModal(false);
+        setSelectedCell(null);
+      }
+    };
+
+    if (showSundayModal || selectedCell) {
+      document.body.style.overflow = 'hidden';
+      window.addEventListener('keydown', handleKeyDown);
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [showSundayModal, selectedCell]);
 
   return (
     <div className="church-site">
       <nav className="navbar">
         <div className="nav-brand">
-          <span className="logo-icon" aria-hidden="true">🔥</span>
+          <img 
+            src="/logo.png" 
+            alt="Proskeun Global Ministry Logo" 
+            className="brand-logo" 
+            loading="lazy"
+          />
+
           <div className="logo-text">
             <span className="brand-name">PROSKEUN</span>
             <span className="brand-sub">GLOBAL MINISTRY</span>
           </div>
         </div>
 
-        <ul className="nav-links">
-          <li><a href="#home">Home</a></li>
-          <li><a href="#about">About Us</a></li>
-          <li><a href="#schedule">Schedule</a></li>
-          <li><a href="#cells">House Cells</a></li>
-          <li><a href="#media">Media</a></li>
-          <li><a href="#giving">Giving</a></li>
-          <li><a href="#contact">Contact</a></li>
+        {/* Mobile Hamburger Toggle Button */}
+        <button 
+          className={`mobile-menu-toggle ${isNavOpen ? 'active' : ''}`}
+          onClick={() => setIsNavOpen(!isNavOpen)}
+          aria-label="Toggle Navigation Menu"
+          aria-expanded={isNavOpen}
+        >
+          <span className="bar"></span>
+          <span className="bar"></span>
+          <span className="bar"></span>
+        </button>
+
+        <ul className={`nav-links ${isNavOpen ? 'nav-active' : ''}`}>
+          <li><a href="#home" onClick={(e) => handleNavClick(e, 'home')}>Home</a></li>
+          <li><a href="#about" onClick={(e) => handleNavClick(e, 'about')}>About Us</a></li>
+          <li><a href="#schedule" onClick={(e) => handleNavClick(e, 'schedule')}>Schedule</a></li>
+          <li><a href="#cells" onClick={(e) => handleNavClick(e, 'cells')}>House Cells</a></li>
+          <li><a href="#media" onClick={(e) => handleNavClick(e, 'media')}>Media</a></li>
+          <li><a href="#giving" onClick={(e) => handleNavClick(e, 'giving')}>Giving</a></li>
+          <li><a href="#contact" onClick={(e) => handleNavClick(e, 'contact')}>Contact</a></li>
         </ul>
 
         <div className="nav-cta">
@@ -90,7 +140,7 @@ const HomePage = () => {
         </div>
       </nav>
 
-      {/* HERO SECTION WITH BACKGROUND IMAGE */}
+      {/* HERO SECTION */}
       <section 
         id="home" 
         className="hero-section"
@@ -110,12 +160,12 @@ const HomePage = () => {
           </p>
           <div className="hero-actions">
             <button onClick={() => setShowSundayModal(true)} className="btn-primary">Join Us This Sunday</button>
-            <a href="#cells" className="btn-secondary">Find a Cell Near You</a>
+            <a href="#cells" onClick={(e) => handleNavClick(e, 'cells')} className="btn-secondary">Find a Cell Near You</a>
           </div>
         </div>
       </section>
 
-      {/* CONCLUDED ABLAZE SECTION */}
+      {/* RECAP SPOTLIGHT */}
       <section id="ablaze" className="recap-banner">
         <div className="recap-card">
           <div className="recap-details">
@@ -136,7 +186,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* LEADERSHIP SECTION WITH FULL BACKGROUND IMAGES */}
+      {/* LEADERSHIP SECTION */}
       <section id="about" className="about-section">
         <div className="section-header">
           <h2>Our Vision & Leadership</h2>
@@ -144,13 +194,13 @@ const HomePage = () => {
         </div>
 
         <div className="leadership-cards">
-          {/* Head Pastor Card */}
           <div className="leader-card">
             <div className="pastor-bg-container">
               <img 
                 src="/IMG_9565.WEBP" 
                 alt="Pastor Osasumwen Eghianruwa" 
                 className="pastor-img"
+                loading="lazy"
                 onError={(e) => { 
                   e.target.onerror = null; 
                   e.target.src="https://via.placeholder.com/400x500?text=Pastor+Osas"; 
@@ -164,13 +214,13 @@ const HomePage = () => {
             </div>
           </div>
 
-          {/* Resident Pastor Card */}
           <div className="leader-card">
             <div className="pastor-bg-container">
               <img 
                 src="/IMG_9572.WEBP" 
                 alt="Pastor Joy Eghianruwa" 
                 className="pastor-img"
+                loading="lazy"
                 onError={(e) => { 
                   e.target.onerror = null; 
                   e.target.src="https://via.placeholder.com/400x500?text=Pastor+Joy"; 
@@ -205,7 +255,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* CLICKABLE HOMECELLS SECTION */}
+      {/* HOUSECELLS SECTION */}
       <section id="cells" className="cells-section">
         <div className="section-header">
           <h2>House Cell Centers</h2>
@@ -251,6 +301,7 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* GIVING SECTION */}
       <section id="giving" className="giving-section">
         <div className="section-header">
           <h2>Partner & Give</h2>
@@ -267,7 +318,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* PRAYER & COUNSELING SECTION */}
+      {/* CONTACT SECTION */}
       <section id="contact" className="contact-section">
         <div className="section-header">
           <h2>Prayer & Counseling</h2>
@@ -275,13 +326,26 @@ const HomePage = () => {
         </div>
 
         <form className="contact-form" onSubmit={(e) => e.preventDefault()}>
-          <input type="text" placeholder="Full Name" required />
-          <input type="email" placeholder="Email Address" required />
-          <textarea placeholder="Write your prayer request or counseling inquiry here..." rows="5" required></textarea>
+          <div className="form-group">
+            <label htmlFor="user-fullname">Full Name</label>
+            <input id="user-fullname" type="text" placeholder="Full Name" required />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="user-email">Email Address</label>
+            <input id="user-email" type="email" placeholder="Email Address" required />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="user-message">Prayer Request / Inquiry</label>
+            <textarea id="user-message" placeholder="Write your prayer request or counseling inquiry here..." rows="5" required></textarea>
+          </div>
+
           <button type="submit" className="btn-primary">Send Request</button>
         </form>
       </section>
 
+      {/* FAQ SECTION */}
       <section id="faq" className="faq-section">
         <div className="section-header">
           <h2>First-Time Visitors FAQ</h2>
@@ -299,15 +363,15 @@ const HomePage = () => {
 
       {/* SUNDAY SERVICE MODAL */}
       {showSundayModal && (
-        <div className="modal-overlay" onClick={() => setShowSundayModal(false)}>
+        <div className="modal-overlay" onClick={() => setShowSundayModal(false)} role="dialog" aria-modal="true">
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="close-btn" onClick={() => setShowSundayModal(false)}>✕</button>
+            <button className="close-btn" onClick={() => setShowSundayModal(false)} aria-label="Close modal">✕</button>
             <h2>Join Us This Sunday</h2>
             <p className="modal-subtitle">Starts 7:30 AM | Believers' Institute & Main Glorious Service</p>
             
             <div className="modal-gallery">
-              <img src="/assets/church-1.jpg" alt="Church Service" onError={(e) => { e.target.onerror = null; e.target.src="https://via.placeholder.com/300x200?text=Church+Interior"; }} />
-              <img src="/assets/church-2.jpg" alt="Church Worship" onError={(e) => { e.target.onerror = null; e.target.src="https://via.placeholder.com/300x200?text=Worship+Service"; }} />
+              <img src="/assets/church-1.jpg" alt="Church Service" loading="lazy" onError={(e) => { e.target.onerror = null; e.target.src="https://via.placeholder.com/300x200?text=Church+Interior"; }} />
+              <img src="/assets/church-2.jpg" alt="Church Worship" loading="lazy" onError={(e) => { e.target.onerror = null; e.target.src="https://via.placeholder.com/300x200?text=Worship+Service"; }} />
             </div>
 
             <h3>Location & Directions</h3>
@@ -326,9 +390,9 @@ const HomePage = () => {
 
       {/* HOMECELL LOCATION MODAL */}
       {selectedCell && (
-        <div className="modal-overlay" onClick={() => setSelectedCell(null)}>
+        <div className="modal-overlay" onClick={() => setSelectedCell(null)} role="dialog" aria-modal="true">
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="close-btn" onClick={() => setSelectedCell(null)}>✕</button>
+            <button className="close-btn" onClick={() => setSelectedCell(null)} aria-label="Close modal">✕</button>
             <h2>{selectedCell.name}</h2>
             
             <p className="cell-modal-location" style={{ marginTop: '0.8rem', fontSize: '0.98rem' }}>
@@ -375,10 +439,10 @@ const HomePage = () => {
           <div className="footer-links">
             <h4>Quick Links</h4>
             <ul>
-              <li><a href="#about">About Us</a></li>
-              <li><a href="#schedule">Service Schedule</a></li>
-              <li><a href="#cells">House Cells</a></li>
-              <li><a href="#giving">Giving</a></li>
+              <li><a href="#about" onClick={(e) => handleNavClick(e, 'about')}>About Us</a></li>
+              <li><a href="#schedule" onClick={(e) => handleNavClick(e, 'schedule')}>Service Schedule</a></li>
+              <li><a href="#cells" onClick={(e) => handleNavClick(e, 'cells')}>House Cells</a></li>
+              <li><a href="#giving" onClick={(e) => handleNavClick(e, 'giving')}>Giving</a></li>
             </ul>
           </div>
 
