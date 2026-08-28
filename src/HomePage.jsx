@@ -22,13 +22,13 @@ const cellsData = [
     name: 'Uwasota Cell', 
     location: 'The Proskeun Center, 15 Nova Road, Opp Uwasota Busstop Ugbowo, Benin city.', 
     leader: 'Pastor Chinonso',
-    inquiries: 'for inquiries, contact: +2347034539013'
+    details: 'for inquiries, contact: +2347034539013'
   },
   { 
     name: 'UNIBEN Cell', 
     location: 'Behind Auditorium university of Benin,', 
-    leader: 'pastor Gershom',
-    inquiries: 'for inquiries, contact: +2348149413186' 
+    leader: 'Pastor Gershom',
+    details: 'for inquiries, contact: +2348149413186' 
   },
   { 
     name: 'Precious Palm Cell', 
@@ -90,7 +90,17 @@ const HomePage = () => {
         </div>
       </nav>
 
-      <section id="home" className="hero-section">
+      {/* HERO SECTION WITH BACKGROUND IMAGE */}
+      <section 
+        id="home" 
+        className="hero-section"
+        style={{
+          backgroundImage: `linear-gradient(180deg, rgba(6, 15, 38, 0.75) 0%, rgba(10, 26, 60, 0.90) 100%), url('/path-to-your-congregation-image.jpg')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
         <div className="hero-content">
           <span className="badge">Welcome to Proskeun</span>
           <h1>Proskeun Global Ministry</h1>
@@ -303,12 +313,12 @@ const HomePage = () => {
             <h3>Location & Directions</h3>
             <p className="modal-address">📍 The Proskeun Center, 15 Nova Road, Opp Uwasota Busstop Ugbowo, Benin city.</p>
             <a 
-              href="https://maps.google.com/?q=Proskeun+Global+Ministry" 
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent("The Proskeun Center, 15 Nova Road, Opp Uwasota Busstop Ugbowo, Benin city")}`} 
               target="_blank" 
               rel="noopener noreferrer" 
               className="btn-primary modal-directions-btn"
             >
-              Get Directions on Google Maps📍
+              Get Directions on Google Maps 📍
             </a>
           </div>
         </div>
@@ -331,9 +341,11 @@ const HomePage = () => {
               </p>
             )}
 
-            <p className="cell-modal-details" style={{ marginTop: '0.8rem', color: 'var(--white-dim)' }}>
-              {selectedCell.details}
-            </p>
+            {selectedCell.details && (
+              <p className="cell-modal-details" style={{ marginTop: '0.8rem', color: 'var(--white-dim)' }}>
+                {selectedCell.details}
+              </p>
+            )}
 
             <div className="cell-modal-time-box" style={{ marginTop: '1.2rem' }}>
               <p><strong>Meeting Time:</strong> Thursdays @ 4:00 PM – 5:00 PM</p>
@@ -352,6 +364,7 @@ const HomePage = () => {
         </div>
       )}
 
+      {/* FOOTER */}
       <footer className="site-footer">
         <div className="footer-content">
           <div className="footer-info">
@@ -383,8 +396,16 @@ const HomePage = () => {
                   Telegram
                 </a>
               </li>
-              <li><span className="social-coming-soon">Facebook (coming soon)</span></li>
-              <li><span className="social-coming-soon">Instagram (coming soon)</span></li>
+              <li>
+                <a href="https://www.facebook.com/profile.php?id=61567927055011" target="_blank" rel="noreferrer">
+                  Facebook
+                </a>
+              </li>
+              <li>
+                <a href="https://www.instagram.com/YOUR_INSTAGRAM_HANDLE" target="_blank" rel="noreferrer">
+                  Instagram
+                </a>
+              </li>
             </ul>
           </div>
         </div>
