@@ -58,10 +58,27 @@ const faqData = [
   }
 ];
 
+const galleryData = [
+  { id: 1, category: 'worship', title: 'Atmosphere of Praise', img: '/1.jpg', desc: 'Deep moments of worship during our Sunday service.' },
+  { id: 2, category: 'services', title: 'The Word Ministration', img: '/2.jpg', desc: 'Pastor sharing life-transforming truths.' },
+  { id: 3, category: 'outreach', title: 'Community Impact', img: '/3.jpg', desc: 'Reaching out and spreading love in the city.' },
+  { id: 4, category: 'worship', title: 'Lifted Hands', img: '/4.jpg', desc: 'An altar filled with total surrender and joy.' },
+  { id: 5, category: 'services', title: 'Prayer Altar', img: '/5.jpg', desc: 'Calling down fire and breakthrough.' },
+  { id: 6, category: 'outreach', title: 'Youth Fire Night', img: '/6.jpg', desc: 'The young generation on fire for God.' },
+];
+
 const HomePage = () => {
   const [showSundayModal, setShowSundayModal] = useState(false);
   const [selectedCell, setSelectedCell] = useState(null);
   const [isNavOpen, setIsNavOpen] = useState(false);
+
+  // Gallery States
+  const [galleryFilter, setGalleryFilter] = useState('all');
+  const [activeImage, setActiveImage] = useState(null);
+
+  const filteredGalleryItems = galleryFilter === 'all' 
+    ? galleryData 
+    : galleryData.filter(item => item.category === galleryFilter);
 
   // Smooth scroll handler & auto-closes mobile navigation drawer
   const handleNavClick = (e, targetId) => {
@@ -80,10 +97,11 @@ const HomePage = () => {
       if (e.key === 'Escape') {
         setShowSundayModal(false);
         setSelectedCell(null);
+        setActiveImage(null);
       }
     };
 
-    if (showSundayModal || selectedCell) {
+    if (showSundayModal || selectedCell || activeImage) {
       document.body.style.overflow = 'hidden';
       window.addEventListener('keydown', handleKeyDown);
     } else {
@@ -94,7 +112,7 @@ const HomePage = () => {
       document.body.style.overflow = 'unset';
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [showSundayModal, selectedCell]);
+  }, [showSundayModal, selectedCell, activeImage]);
 
   return (
     <div className="church-site">
@@ -131,6 +149,7 @@ const HomePage = () => {
           <li><a href="#schedule" onClick={(e) => handleNavClick(e, 'schedule')}>Schedule</a></li>
           <li><a href="#cells" onClick={(e) => handleNavClick(e, 'cells')}>House Cells</a></li>
           <li><a href="#media" onClick={(e) => handleNavClick(e, 'media')}>Media</a></li>
+          <li><a href="#gallery" onClick={(e) => handleNavClick(e, 'gallery')}>Gallery</a></li>
           <li><a href="#giving" onClick={(e) => handleNavClick(e, 'giving')}>Giving</a></li>
           <li><a href="#contact" onClick={(e) => handleNavClick(e, 'contact')}>Contact</a></li>
         </ul>
@@ -175,7 +194,7 @@ const HomePage = () => {
           </div>
           <div className="recap-action">
             <a 
-              href="https://www.tiktok.com/@proskeunministry?_r=1&_t=ZS-98xLb1Id5xX" 
+              href="https://www.tiktok.com/@proskeunministry/video/7674680799458888980?is_from_webapp=1&sender_device=pc&web_id=7674951370042033672" 
               target="_blank" 
               rel="noreferrer" 
               className="btn-light"
@@ -298,6 +317,36 @@ const HomePage = () => {
           >
             Join Telegram Channel 📲
           </a>
+        </div>
+      </section>
+
+      {/* DIGITAL GALLERY SECTION */}
+      <section className="gallery-section" id="gallery">
+        <div className="section-header">
+          <span className="badge">Visual Archive</span>
+          <h2>Ministry Moments</h2>
+          <p>A glimpse into the joy, power, and fellowship of Proskeun Global Ministry.</p>
+        </div>
+
+        {/* Filter Buttons */}
+        <div className="gallery-filters">
+          <button className={galleryFilter === 'all' ? 'filter-btn active' : 'filter-btn'} onClick={() => setGalleryFilter('all')}>All</button>
+          <button className={galleryFilter === 'worship' ? 'filter-btn active' : 'filter-btn'} onClick={() => setGalleryFilter('worship')}>Worship</button>
+          <button className={galleryFilter === 'services' ? 'filter-btn active' : 'filter-btn'} onClick={() => setGalleryFilter('services')}>Services</button>
+          <button className={galleryFilter === 'outreach' ? 'filter-btn active' : 'filter-btn'} onClick={() => setGalleryFilter('outreach')}>Outreach</button>
+        </div>
+
+        {/* Image Grid */}
+        <div className="gallery-grid">
+          {filteredGalleryItems.map(item => (
+            <div key={item.id} className="gallery-item" onClick={() => setActiveImage(item)}>
+              <img src={item.img} alt={item.title} loading="lazy" />
+              <div className="gallery-overlay">
+                <span className="gallery-cat">{item.category}</span>
+                <h4>{item.title}</h4>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -428,6 +477,21 @@ const HomePage = () => {
         </div>
       )}
 
+      {/* GALLERY LIGHTBOX MODAL */}
+      {activeImage && (
+        <div className="modal-overlay" onClick={() => setActiveImage(null)} role="dialog" aria-modal="true">
+          <div className="modal-content gallery-modal" onClick={e => e.stopPropagation()}>
+            <button className="close-btn" onClick={() => setActiveImage(null)} aria-label="Close modal">×</button>
+            <img src={activeImage.img} alt={activeImage.title} className="lightbox-img" />
+            <div className="lightbox-info">
+              <span className="recap-tag">{activeImage.category}</span>
+              <h3>{activeImage.title}</h3>
+              <p>{activeImage.desc}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* FOOTER */}
       <footer className="site-footer">
         <div className="footer-content">
@@ -442,32 +506,33 @@ const HomePage = () => {
               <li><a href="#about" onClick={(e) => handleNavClick(e, 'about')}>About Us</a></li>
               <li><a href="#schedule" onClick={(e) => handleNavClick(e, 'schedule')}>Service Schedule</a></li>
               <li><a href="#cells" onClick={(e) => handleNavClick(e, 'cells')}>House Cells</a></li>
+              <li><a href="#gallery" onClick={(e) => handleNavClick(e, 'gallery')}>Gallery</a></li>
               <li><a href="#giving" onClick={(e) => handleNavClick(e, 'giving')}>Giving</a></li>
             </ul>
           </div>
 
           <div className="footer-social">
-            <h4>Social Handles</h4>
+            <h4>Connect</h4>
             <p>Follow <strong>@Proskeun global ministries</strong></p>
-            <ul className="social-links">
+            <ul className="social-icons-list">
               <li>
-                <a href="https://www.tiktok.com/@proskeunministry?_r=1&_t=ZS-98xLb1Id5xX" target="_blank" rel="noreferrer">
-                  TikTok
+                <a href="https://www.tiktok.com/@proskeunministry?_r=1&_t=ZS-98xLb1Id5xX" target="_blank" rel="noreferrer" aria-label="TikTok">
+                  <svg className="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
                 </a>
               </li>
               <li>
-                <a href="https://t.me/YOUR_TELEGRAM_CHANNEL_LINK" target="_blank" rel="noreferrer">
-                  Telegram
+                <a href="" target="_blank" rel="noreferrer" aria-label="Telegram">
+                  <svg className="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2m5.05 7.15-1.55 7.31c-.12.54-.44.67-.89.42l-2.47-1.82-1.19 1.15c-.13.13-.24.24-.49.24l.18-2.52 4.59-4.15c.2-.18-.04-.28-.31-.1l-5.67 3.57-2.44-.76c-.53-.17-.54-.53.11-.78l9.53-3.67c.44-.16.83.1.69.78Z"/></svg>
                 </a>
               </li>
               <li>
-                <a href="https://www.facebook.com/profile.php?id=61567927055011" target="_blank" rel="noreferrer">
-                  Facebook
+                <a href="https://www.facebook.com/profile.php?id=61567927055011" target="_blank" rel="noreferrer" aria-label="Facebook">
+                  <svg className="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12c0-5.523-4.477-10-10-10z"/></svg>
                 </a>
               </li>
               <li>
-                <a href="https://www.instagram.com/YOUR_INSTAGRAM_HANDLE" target="_blank" rel="noreferrer">
-                  Instagram
+                <a href="" target="_blank" rel="noreferrer" aria-label="Instagram">
+                  <svg className="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                 </a>
               </li>
             </ul>

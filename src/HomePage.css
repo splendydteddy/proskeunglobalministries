@@ -1,29 +1,29 @@
 /* ==========================================================================
-   Proskeun Global Ministry — "Atmosphere of Joy and Fire"
-   Complete Stylesheet with Global Watermark & Increased Opacity
-   ========================================================================== */
+    Proskeun Global Ministry — "Atmosphere of Joy and Fire"
+    Complete Stylesheet with Global Watermark & Digital Gallery
+    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap');
 
 :root {
   /* Site & Body Colors */
-  --site-bg:          #030838;
-  --navy-deep:        #01041b;
-  --royal:            #070d4d;
-  --royal-line:       #151e6d;
+  --site-bg:         #030838;
+  --navy-deep:       #01041b;
+  --royal:           #070d4d;
+  --royal-line:      #151e6d;
 
   /* Brighter Nav Bar Color for proper contrast with the logo and links */
-  --navbar-bg:        rgba(15, 28, 90, 0.94); 
+  --navbar-bg:       rgba(15, 28, 90, 0.94); 
 
   /* Gold & Accent Colors */
-  --gold:             #dcba54;
-  --gold-bright:      #e5ca6e;
-  --gold-soft:        rgba(220, 186, 84, 0.16);
-  --white:            #FFFFFF;
-  --white-dim:        #C7D0E6;
-  --slate:            #7C88AC;
-  --telegram-blue:    #0088cc;
-  --telegram-hover:   #006699;
+  --gold:            #dcba54;
+  --gold-bright:     #e5ca6e;
+  --gold-soft:       rgba(220, 186, 84, 0.16);
+  --white:           #FFFFFF;
+  --white-dim:       #C7D0E6;
+  --slate:           #7C88AC;
+  --telegram-blue:   #0088cc;
+  --telegram-hover:  #006699;
 
   --font-display: 'Fraunces', Georgia, serif;
   --font-body:    'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -84,8 +84,8 @@ html, body {
   background-position: center center;
   background-size: min(500px, 70vw);
   
-  /* Increased opacity so it's clearly visible */
-  opacity: 0.09; 
+  /* Increased opacity for clear, striking visibility */
+  opacity: 0.25; 
   
   pointer-events: none;
   z-index: 0;
@@ -554,6 +554,135 @@ section {
   color: var(--gold-bright);
 }
 
+/* Digital Gallery / Ministry Moments Section Styles */
+.gallery-section {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.gallery-filters {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: var(--space-3);
+}
+
+.filter-btn {
+  background: var(--royal);
+  color: var(--white-dim);
+  border: 1px solid var(--royal-line);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.5em 1.2em;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+  background: var(--gold);
+  color: var(--navy-deep);
+  border-color: var(--gold);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 186, 84, 0.3);
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, var(--space-3));
+}
+
+.gallery-item {
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--royal);
+  border: 1px solid var(--royal-line);
+  aspect-ratio: 4 / 3;
+  cursor: pointer;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.gallery-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(1, 4, 27, 0.2) 20%, rgba(1, 4, 27, 0.9) 90%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.2rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gallery-cat {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.2rem;
+}
+
+.gallery-overlay h4 {
+  font-size: 1.05rem;
+  color: var(--white);
+  margin: 0;
+}
+
+.gallery-item:hover {
+  transform: translateY(-4px);
+  border-color: var(--gold);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.gallery-item:hover img {
+  transform: scale(1.08);
+}
+
+.gallery-item:hover .gallery-overlay {
+  opacity: 1;
+}
+
+.gallery-modal {
+  max-width: 680px;
+  padding: 1.5rem;
+  text-align: left;
+}
+
+.lightbox-img {
+  width: 100%;
+  max-height: 60vh;
+  object-fit: contain;
+  background: var(--navy-deep);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--royal-line);
+  margin-bottom: 1rem;
+}
+
+.lightbox-info h3 {
+  font-size: 1.3rem;
+  margin: 0.3rem 0 0.5rem;
+}
+
+.lightbox-info p {
+  font-size: 0.95rem;
+  color: var(--white-dim);
+}
+
 /* Media Section */
 .media-section { max-width: var(--max-width); margin: 0 auto; }
 
@@ -828,6 +957,26 @@ section {
 .footer-links a:hover, .footer-social a:hover { color: var(--gold); }
 .social-coming-soon { color: var(--slate); font-size: 0.92rem; }
 
+/* Social Icons Styling */
+.social-icons-list {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 0.9rem !important;
+  margin-top: 0.4rem;
+}
+
+.social-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--white-dim);
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.social-icons-list a:hover .social-icon {
+  color: var(--gold);
+  transform: translateY(-2px);
+}
+
 .footer-bottom {
   max-width: var(--max-width);
   margin: clamp(1.5rem, 3vw, var(--space-4)) auto 0;
@@ -885,6 +1034,12 @@ section {
   }
 }
 
+@media (max-width: 900px) {
+  .gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 768px) {
   .schedule-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .footer-content { grid-template-columns: 1fr; gap: var(--space-3); }
@@ -914,6 +1069,12 @@ section {
 
   .modal-gallery { grid-template-columns: 1fr; }
   .pastor-bg-container { height: 320px; }
+}
+
+@media (max-width: 540px) {
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 480px) {
