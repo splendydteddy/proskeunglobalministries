@@ -30,16 +30,10 @@ const cellsData = [
     details: 'for inquiries, contact: +2348149413186' 
   },
   { 
-    name: 'Precious Palm Cell', 
-    location: 'Precious Palm Royal Hotel Area, Ugbowo', 
-    leader: 'Bro. Daniel',
-    details: 'Fostering tight-knit fellowship and apostolic teaching for young adults and families in the Precious Palm axis.' 
-  },
-  { 
     name: 'Uselu Cell', 
     location: 'Uselu Market Axis, Benin City', 
-    leader: 'Sis. Grace',
-    details: 'Dedicated to outreach, fervent intercession, and discipleship in the Uselu neighborhood.' 
+    leader: 'Pastor Favour',
+    details: 'for inquiries, contact: +2349065697493' 
   },
 ];
 
@@ -59,12 +53,12 @@ const faqData = [
 ];
 
 const galleryData = [
-  { id: 1, category: 'worship', title: 'Atmosphere of Praise', img: '/1.jpg', desc: 'Deep moments of worship during our Sunday service.' },
-  { id: 2, category: 'services', title: 'The Word Ministration', img: '/2.jpg', desc: 'Pastor sharing life-transforming truths.' },
-  { id: 3, category: 'outreach', title: 'Community Impact', img: '/3.jpg', desc: 'Reaching out and spreading love in the city.' },
-  { id: 4, category: 'worship', title: 'Lifted Hands', img: '/4.jpg', desc: 'An altar filled with total surrender and joy.' },
-  { id: 5, category: 'services', title: 'Prayer Altar', img: '/5.jpg', desc: 'Calling down fire and breakthrough.' },
-  { id: 6, category: 'outreach', title: 'Youth Fire Night', img: '/6.jpg', desc: 'The young generation on fire for God.' },
+  { id: 1, category: 'worship', title: 'Atmosphere of Praise', img: '/prsise.jpg', desc: 'Deep moments of worship during our Sunday service.' },
+  { id: 2, category: 'services', title: 'The Word Ministration', img: '/word.jpg', desc: 'Pastor sharing life-transforming truths.' },
+  { id: 3, category: 'outreach', title: 'Community Impact', img: '/impact.jpg', desc: 'Reaching out and spreading love in the city.' },
+  { id: 4, category: 'worship', title: 'Lifted Hands', img: '/liftedhands.jpg', desc: 'An altar filled with total surrender and joy.' },
+  { id: 5, category: 'services', title: 'Prayer Altar', img: '/pray.jpg', desc: 'Calling down fire and breakthrough.' },
+  { id: 6, category: 'Togetherness', title: 'Proskeun Family', img: '/proskeun.jpg', desc: 'The young generation on fire for God.' },
 ];
 
 const HomePage = () => {
@@ -147,7 +141,7 @@ const HomePage = () => {
           <li><a href="#home" onClick={(e) => handleNavClick(e, 'home')}>Home</a></li>
           <li><a href="#about" onClick={(e) => handleNavClick(e, 'about')}>About Us</a></li>
           <li><a href="#schedule" onClick={(e) => handleNavClick(e, 'schedule')}>Schedule</a></li>
-          <li><a href="#cells" onClick={(e) => handleNavClick(e, 'cells')}>House Cells</a></li>
+          <li><a href="#cells" onClick={(e) => handleNavClick(e, 'cells')}>Cells</a></li>
           <li><a href="#media" onClick={(e) => handleNavClick(e, 'media')}>Media</a></li>
           <li><a href="#gallery" onClick={(e) => handleNavClick(e, 'gallery')}>Gallery</a></li>
           <li><a href="#giving" onClick={(e) => handleNavClick(e, 'giving')}>Giving</a></li>
@@ -216,7 +210,7 @@ const HomePage = () => {
           <div className="leader-card">
             <div className="pastor-bg-container">
               <img 
-                src="/IMG_9565.WEBP" 
+                src="/pastor1.jpg" 
                 alt="Pastor Osasumwen Eghianruwa" 
                 className="pastor-img"
                 loading="lazy"
@@ -360,9 +354,9 @@ const HomePage = () => {
           <div className="giving-card">
             <span className="icon" aria-hidden="true">💳</span>
             <h3>Bank Transfer</h3>
-            <p><strong>Bank:</strong> [Bank Name]</p>
-            <p><strong>Account Name:</strong> Proskeun Global Ministry</p>
-            <p><strong>Account Number:</strong> [0000000000]</p>
+            <p><strong>Bank:</strong> Wema Bank</p>
+            <p><strong>Account Name:</strong> Proskeun Global Ministries</p>
+            <p><strong>Account Number:</strong>0126408317</p>
           </div>
         </div>
       </section>
@@ -419,14 +413,14 @@ const HomePage = () => {
             <p className="modal-subtitle">Starts 7:30 AM | Believers' Institute & Main Glorious Service</p>
             
             <div className="modal-gallery">
-              <img src="/assets/church-1.jpg" alt="Church Service" loading="lazy" onError={(e) => { e.target.onerror = null; e.target.src="https://via.placeholder.com/300x200?text=Church+Interior"; }} />
-              <img src="/assets/church-2.jpg" alt="Church Worship" loading="lazy" onError={(e) => { e.target.onerror = null; e.target.src="https://via.placeholder.com/300x200?text=Worship+Service"; }} />
+              <img src="/front.webp" alt="Church Front View" loading="lazy" onError={(e) => { e.target.onerror = null; e.target.src="https://via.placeholder.com/300x200?text=Church+Front"; }} />
+              <img src="/side.webp" alt="Church Side View" loading="lazy" onError={(e) => { e.target.onerror = null; e.target.src="https://via.placeholder.com/300x200?text=Church+Side"; }} />
             </div>
 
             <h3>Location & Directions</h3>
             <p className="modal-address">📍 The Proskeun Center, 15 Nova Road, Opp Uwasota Busstop Ugbowo, Benin city.</p>
             <a 
-              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent("The Proskeun Center, 15 Nova Road, Opp Uwasota Busstop Ugbowo, Benin city")}`} 
+              href="https://www.google.com/maps/dir//Proskeun+global+ministry,+12a+Ogbeide+St,+Uselu,+Benin+City+300103,+Edo/@6.394096,5.6094877,7360m/data=!3m1!1e3!4m8!4m7!1m0!1m5!1m1!1s0x10472d004e8f03cb:0x2a72fc5135325510!2m2!1d5.6119774!2d6.384577?entry=ttu&g_ep=EgoyMDI2MDgyNi4wIKXMDSoASAFQAw%3D%3D" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="btn-primary modal-directions-btn"
@@ -535,6 +529,17 @@ const HomePage = () => {
                   <svg className="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                 </a>
               </li>
+              <li>
+              <a href="https://youtube.com/@houseofshamba?si=gJzWZ4r9Reo2sUhx" 
+             target="_blank" 
+    rel="noreferrer" 
+    aria-label="YouTube"
+  >
+    <svg className="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+    </svg>
+  </a>
+</li>
             </ul>
           </div>
         </div>
