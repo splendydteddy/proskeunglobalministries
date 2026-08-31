@@ -7,23 +7,23 @@
 
 :root {
   /* Site & Body Colors */
-  --site-bg:         #030838;
-  --navy-deep:       #01041b;
-  --royal:           #070d4d;
-  --royal-line:      #151e6d;
+  --site-bg:        #030838;
+  --navy-deep:      #01041b;
+  --royal:          #070d4d;
+  --royal-line:     #151e6d;
 
   /* Brighter Nav Bar Color for proper contrast with the logo and links */
-  --navbar-bg:       rgba(15, 28, 90, 0.94); 
+  --navbar-bg:      rgba(15, 28, 90, 0.94); 
 
   /* Gold & Accent Colors */
-  --gold:            #dcba54;
-  --gold-bright:     #e5ca6e;
-  --gold-soft:       rgba(220, 186, 84, 0.16);
-  --white:           #FFFFFF;
-  --white-dim:       #C7D0E6;
-  --slate:           #7C88AC;
-  --telegram-blue:   #0088cc;
-  --telegram-hover:  #006699;
+  --gold:           #dcba54;
+  --gold-bright:    #e5ca6e;
+  --gold-soft:      rgba(220, 186, 84, 0.16);
+  --white:          #FFFFFF;
+  --white-dim:      #C7D0E6;
+  --slate:          #7C88AC;
+  --telegram-blue:  #0088cc;
+  --telegram-hover: #006699;
 
   --font-display: 'Fraunces', Georgia, serif;
   --font-body:    'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -554,6 +554,99 @@ section {
   color: var(--gold-bright);
 }
 
+/* ==========================================================================
+   Departments Section Styles (Background Image Support for All Cards)
+   ========================================================================== */
+
+.departments-section {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.departments-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 2.5vw, var(--space-3));
+}
+
+.dept-card {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 1px solid var(--royal-line);
+  border-radius: var(--radius-lg);
+  padding: clamp(1.2rem, 3vw, var(--space-4));
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* Dark gradient overlay for text legibility over any background photo */
+.dept-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(1, 4, 27, 0.93) 20%, rgba(7, 13, 77, 0.88) 100%);
+  z-index: 0;
+}
+
+/* Ensure inner content sits securely above the overlay */
+.dept-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.dept-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.dept-card .icon {
+  font-size: 1.8rem;
+  margin-bottom: var(--space-1);
+  display: inline-block;
+}
+
+.dept-tag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.3em;
+}
+
+.dept-card h3 {
+  font-size: clamp(1.15rem, 2vw, 1.35rem);
+  margin: 0.2em 0 0.5em;
+  color: var(--white);
+}
+
+.dept-card p {
+  font-size: 0.92rem;
+  color: var(--white-dim);
+  line-height: 1.6;
+  margin-bottom: var(--space-2);
+  flex-grow: 1;
+}
+
+.dept-footer {
+  border-top: 1px solid var(--royal-line);
+  padding-top: 0.8rem;
+  margin-top: auto;
+}
+
+.dept-time {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--slate);
+  letter-spacing: 0.04em;
+}
+
 /* Digital Gallery / Ministry Moments Section Styles */
 .gallery-section {
   max-width: var(--max-width);
@@ -1042,6 +1135,7 @@ section {
 
 @media (max-width: 768px) {
   .schedule-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .departments-grid { grid-template-columns: 1fr; }
   .footer-content { grid-template-columns: 1fr; gap: var(--space-3); }
   .leadership-cards { grid-template-columns: 1fr; }
 }
