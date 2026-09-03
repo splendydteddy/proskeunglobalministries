@@ -14,8 +14,8 @@ const cellsData = [
   { 
     name: '19th Street Cell', 
     location: '19th Street Center, BDPA, Ugbowo, Benin City', 
-    leader: 'Bro. Emmanuel',
-    details: 'A vibrant home cell focused on word study, intercession, and spiritual growth in the BDPA community.' 
+    leader: 'Pastor Ibrahim',
+    details: 'for inquiries, contact: +2347039689755'
   },
   { 
     name: 'Uwasota Cell', 
@@ -339,7 +339,7 @@ const HomePage = () => {
             <p>Access full teachings, sermon series, and ministration recordings directly on Telegram.</p>
           </div>
           <a 
-            href="https://t.me/YOUR_TELEGRAM_CHANNEL_LINK" 
+            href="https://t.me/proskeuncity" 
             target="_blank" 
             rel="noreferrer" 
             className="btn-telegram"
@@ -578,7 +578,7 @@ const HomePage = () => {
                 </a>
               </li>
               <li>
-                <a href="" target="_blank" rel="noreferrer" aria-label="Telegram">
+                <a href="https://t.me/proskeuncity" target="_blank" rel="noreferrer" aria-label="Telegram">
                   <svg className="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2m5.05 7.15-1.55 7.31c-.12.54-.44.67-.89.42l-2.47-1.82-1.19 1.15c-.13.13-.24.24-.49.24l.18-2.52 4.59-4.15c.2-.18-.04-.28-.31-.1l-5.67 3.57-2.44-.76c-.53-.17-.54-.53.11-.78l9.53-3.67c.44-.16.83.1.69.78Z"/></svg>
                 </a>
               </li>
