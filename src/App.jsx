@@ -11,13 +11,13 @@ function App() {
       <Routes>
         {/* Your main public website homepage */}
         <Route path="/" element={<HomePage />} />
-        
-        {/* Dedicated public page to view/download sermons (Optional: can also be embedded in HomePage) */}
-        <Route path="/sermons" element={<SermonsPage />} />
-        
+
+        {/* Dedicated public page to view/download sermons */}
+        <Route path="/messages" element={<SermonsPage />} />
+
         {/* Secure pastor login route */}
         <Route path="/login" element={<Login />} />
-        
+
         {/* Protected audio upload dashboard for authenticated pastors */}
         <Route path="/admin/upload" element={<UploadPortal />} />
       </Routes>

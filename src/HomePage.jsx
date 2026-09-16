@@ -107,25 +107,28 @@ const HomePage = () => {
   const [galleryFilter, setGalleryFilter] = useState('all');
   const [activeImage, setActiveImage] = useState(null);
 
-  // Sermons state from Supabase
-  const [sermons, setSermons] = useState([]);
+  // Latest Sermon state from Supabase (Single Object)
+  const [latestSermon, setLatestSermon] = useState(null);
   const [sermonsLoading, setSermonsLoading] = useState(true);
 
   useEffect(() => {
-    fetchSermons();
+    fetchLatestSermon();
   }, []);
 
-  const fetchSermons = async () => {
+  const fetchLatestSermon = async () => {
     try {
       const { data, error } = await supabase
         .from('sermon')
         .select('*')
-        .order('date', { ascending: false });
+        .order('date', { ascending: false })
+        .limit(1); // <-- MAGIC FIX: Pulls ONLY the single newest message
 
       if (error) throw error;
-      setSermons(data || []);
+      if (data && data.length > 0) {
+        setLatestSermon(data[0]);
+      }
     } catch (err) {
-      console.error('Error fetching sermons:', err.message);
+      console.error('Error fetching latest sermon:', err.message);
     } finally {
       setSermonsLoading(false);
     }
@@ -348,48 +351,52 @@ const HomePage = () => {
           <p>Access audio messages uploaded by ministers or catch up via our telegram channel.</p>
         </div>
 
-        {/* UPLOADED SERMONS LIST SECTION */}
+        {/* SINGLE LATEST SERMON CARD SECTION */}
         <div className="sermons-archive-container">
-          <h3>Latest Uploaded Messages</h3>
+          <h3>Latest Uploaded Message</h3>
           
           {sermonsLoading ? (
             <div className="sermons-empty-card">
               <div className="spinner"></div>
-              <p>Loading divine archives...</p>
+              <p>Loading latest message...</p>
             </div>
-          ) : sermons.length === 0 ? (
+          ) : !latestSermon ? (
             <div className="sermons-empty-card">
               <span className="recap-tag">Audio & Messages</span>
               <h3>Fresh Archives Preparing</h3>
               <p>Our ministry media team is currently updating this week's apostolic teachings. In the meantime, dive straight into hundreds of hours of transforming sessions on our Telegram library.</p>
-              
             </div>
           ) : (
             <div className="sermons-list">
-              {sermons.map((sermon) => (
-                <div key={sermon.id} className="sermon-item-card">
-                  <div className="sermon-item-header">
-                    <div>
-                      <h4>{sermon.title}</h4>
-                      <span className="sermon-date">Preached on: {sermon.date}</span>
-                    </div>
-                    <a 
-                      href={sermon.audio_url} 
-                      download 
-                      target="_blank" 
-                      rel="noreferrer"
-                      className="sermon-download-btn"
-                    >
-                      Download Audio ⬇️
-                    </a>
+              <div key={latestSermon.id} className="sermon-item-card">
+                <div className="sermon-item-header">
+                  <div>
+                    <h4>{latestSermon.title}</h4>
+                    <span className="sermon-date">Preached on: {latestSermon.date}</span>
                   </div>
-
-                  <audio controls className="sermon-audio-player">
-                    <source src={sermon.audio_url} type="audio/mpeg" />
-                    Your browser does not support the audio element.
-                  </audio>
+                  <a 
+                    href={latestSermon.audio_url} 
+                    download 
+                    target="_blank" 
+                    rel="noreferrer"
+                    className="sermon-download-btn"
+                  >
+                    Download Audio ⬇️
+                  </a>
                 </div>
-              ))}
+
+                <audio controls className="sermon-audio-player">
+                  <source src={latestSermon.audio_url} type="audio/mpeg" />
+                  Your browser does not support the audio element.
+                </audio>
+              </div>
+
+              {/* Link leading over to the separate archive page */}
+              <div style={{ marginTop: '20px', textAlign: 'center' }}>
+                <Link to="/messages" style={{ color: 'var(--accent-color, #d4af37)', fontWeight: 'bold', textDecoration: 'underline' }}>
+                  View All Past Messages in the Archive →
+                </Link>
+              </div>
             </div>
           )}
         </div>
