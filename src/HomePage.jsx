@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { supabase } from './supabaseClient';
 import './HomePage.css';
 
 const scheduleData = [
@@ -36,6 +38,7 @@ const cellsData = [
     details: 'for inquiries, contact: +2349065697493' 
   },
 ];
+
 const ministriesData = [
   { 
     title: 'Choir', 
@@ -104,14 +107,37 @@ const HomePage = () => {
   const [galleryFilter, setGalleryFilter] = useState('all');
   const [activeImage, setActiveImage] = useState(null);
 
+  // Sermons state from Supabase
+  const [sermons, setSermons] = useState([]);
+  const [sermonsLoading, setSermonsLoading] = useState(true);
+
+  useEffect(() => {
+    fetchSermons();
+  }, []);
+
+  const fetchSermons = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('sermon')
+        .select('*')
+        .order('date', { ascending: false });
+
+      if (error) throw error;
+      setSermons(data || []);
+    } catch (err) {
+      console.error('Error fetching sermons:', err.message);
+    } finally {
+      setSermonsLoading(false);
+    }
+  };
+
   const filteredGalleryItems = galleryFilter === 'all' 
     ? galleryData 
     : galleryData.filter(item => item.category === galleryFilter);
 
-  // Smooth scroll handler & auto-closes mobile navigation drawer
   const handleNavClick = (e, targetId) => {
     e.preventDefault();
-    setIsNavOpen(false); // Close mobile drawer menu
+    setIsNavOpen(false);
     
     const targetElement = document.getElementById(targetId);
     if (targetElement) {
@@ -119,7 +145,6 @@ const HomePage = () => {
     }
   };
 
-  // Lock body scroll and handle Escape key listener when any modal is open
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
@@ -159,7 +184,6 @@ const HomePage = () => {
           </div>
         </div>
 
-        {/* Mobile Hamburger Toggle Button */}
         <button 
           className={`mobile-menu-toggle ${isNavOpen ? 'active' : ''}`}
           onClick={() => setIsNavOpen(!isNavOpen)}
@@ -189,16 +213,7 @@ const HomePage = () => {
       </nav>
 
       {/* HERO SECTION */}
-      <section 
-        id="home" 
-        className="hero-section"
-        style={{
-          backgroundImage: `linear-gradient(180deg, rgba(6, 15, 38, 0.75) 0%, rgba(10, 26, 60, 0.90) 100%), url('/path-to-your-congregation-image.jpg')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}
-      >
+      <section id="home" className="hero-section">
         <div className="hero-content">
           <span className="badge">Welcome to Proskeun</span>
           <h1>Proskeun Global Ministry</h1>
@@ -330,8 +345,56 @@ const HomePage = () => {
       <section id="media" className="media-section">
         <div className="section-header">
           <h2>Sermons & Media</h2>
-          <p>All pastors messages are available on the telegram channel.</p>
+          <p>Access audio messages uploaded by ministers or catch up via our telegram channel.</p>
         </div>
+
+        {/* UPLOADED SERMONS LIST SECTION */}
+        <div className="sermons-archive-container">
+          <h3>Latest Uploaded Messages</h3>
+          
+          {sermonsLoading ? (
+            <div className="sermons-empty-card">
+              <div className="spinner"></div>
+              <p>Loading divine archives...</p>
+            </div>
+          ) : sermons.length === 0 ? (
+            <div className="sermons-empty-card">
+              <span className="recap-tag">Audio & Messages</span>
+              <h3>Fresh Archives Preparing</h3>
+              <p>Our ministry media team is currently updating this week's apostolic teachings. In the meantime, dive straight into hundreds of hours of transforming sessions on our Telegram library.</p>
+              
+            </div>
+          ) : (
+            <div className="sermons-list">
+              {sermons.map((sermon) => (
+                <div key={sermon.id} className="sermon-item-card">
+                  <div className="sermon-item-header">
+                    <div>
+                      <h4>{sermon.title}</h4>
+                      <span className="sermon-date">Preached on: {sermon.date}</span>
+                    </div>
+                    <a 
+                      href={sermon.audio_url} 
+                      download 
+                      target="_blank" 
+                      rel="noreferrer"
+                      className="sermon-download-btn"
+                    >
+                      Download Audio ⬇️
+                    </a>
+                  </div>
+
+                  <audio controls className="sermon-audio-player">
+                    <source src={sermon.audio_url} type="audio/mpeg" />
+                    Your browser does not support the audio element.
+                  </audio>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* TELEGRAM ARCHIVE CARD */}
         <div className="media-card">
           <div className="media-info">
             <span className="recap-tag">Audio & Messages</span>
@@ -423,7 +486,7 @@ const HomePage = () => {
         </form>
       </section>
 
-      {/* MINISTRIES & DEPARTMENTS SECTION WITH BACKGROUND IMAGES */}
+      {/* MINISTRIES & DEPARTMENTS SECTION */}
       <section id="ministries" className="departments-section">
         <div className="section-header">
           <span className="badge">Serve With Us</span>
@@ -500,23 +563,23 @@ const HomePage = () => {
             <button className="close-btn" onClick={() => setSelectedCell(null)} aria-label="Close modal">✕</button>
             <h2>{selectedCell.name}</h2>
             
-            <p className="cell-modal-location" style={{ marginTop: '0.8rem', fontSize: '0.98rem' }}>
+            <p className="cell-modal-location">
               📍 <strong>Location:</strong> {selectedCell.location}
             </p>
             
             {selectedCell.leader && (
-              <p style={{ marginTop: '0.4rem', fontSize: '0.95rem', color: 'var(--gold-bright)' }}>
+              <p className="cell-modal-leader">
                 👤 <strong>Cell Leader:</strong> {selectedCell.leader}
               </p>
             )}
 
             {selectedCell.details && (
-              <p className="cell-modal-details" style={{ marginTop: '0.8rem', color: 'var(--white-dim)' }}>
+              <p className="cell-modal-details">
                 {selectedCell.details}
               </p>
             )}
 
-            <div className="cell-modal-time-box" style={{ marginTop: '1.2rem' }}>
+            <div className="cell-modal-time-box">
               <p><strong>Meeting Time:</strong> Thursdays @ 4:00 PM – 5:00 PM</p>
             </div>
 
@@ -525,7 +588,6 @@ const HomePage = () => {
               target="_blank" 
               rel="noopener noreferrer" 
               className="btn-primary modal-directions-btn"
-              style={{ marginTop: '1.2rem' }}
             >
               Open Location in Maps 🗺️
             </a>
@@ -600,6 +662,7 @@ const HomePage = () => {
 
         <div className="footer-bottom">
           <p>© {new Date().getFullYear()} Proskeun Global Ministry. All rights reserved.</p>
+          <Link to="/login" className="portal-link">Pastor Portal</Link>
         </div>
       </footer>
     </div>
