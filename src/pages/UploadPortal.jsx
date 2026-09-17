@@ -77,14 +77,26 @@ export default function UploadPortal() {
     }
   };
 
-  const handleDelete = async (id, title) => {
-    if (!window.confirm(`Are you sure you want to delete "${title}"?`)) return;
+  const handleDelete = async (sermonTitle, audioUrl) => {
+    if (!window.confirm(`Are you sure you want to delete "${sermonTitle}"?`)) return;
 
     try {
+      // 1. Delete the audio file from Supabase storage bucket if audioUrl exists
+      if (audioUrl) {
+        const urlParts = audioUrl.split('/');
+        const fileName = urlParts[urlParts.length - 1];
+        if (fileName) {
+          await supabase.storage
+            .from('sermon-audio')
+            .remove([fileName]);
+        }
+      }
+
+      // 2. Delete the database row using 'title' as the key
       const { error } = await supabase
         .from('sermon')
         .delete()
-        .eq('id', id);
+        .eq('title', sermonTitle);
 
       if (error) throw error;
 
@@ -120,7 +132,7 @@ export default function UploadPortal() {
 
         {/* Upload Form */}
         <form onSubmit={handleUpload} style={{ background: '#112240', padding: '25px', borderRadius: '12px', marginBottom: '40px', boxShadow: '0 4px 15px rgba(0,0,0,0.2)' }}>
-          <h3 style={{ margin: '0 id 20px 0', color: '#fff' }}>Upload New Message</h3>
+          <h3 style={{ margin: '0 0 20px 0', color: '#fff' }}>Upload New Message</h3>
           
           <div style={{ marginBottom: '15px' }}>
             <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px', color: '#ccc' }}>Message Title</label>
@@ -180,13 +192,13 @@ export default function UploadPortal() {
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {sermons.map((sermon) => (
-              <div key={sermon.id} style={{ background: '#112240', padding: '15px 20px', borderRadius: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '15px' }}>
+              <div key={sermon.title} style={{ background: '#112240', padding: '15px 20px', borderRadius: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '15px' }}>
                 <div>
                   <h4 style={{ margin: '0 0 4px 0', fontSize: '16px', color: '#fff' }}>{sermon.title}</h4>
                   <span style={{ fontSize: '12px', color: '#d4af37' }}>{sermon.date}</span>
                 </div>
                 <button 
-                  onClick={() => handleDelete(sermon.id, sermon.title)}
+                  onClick={() => handleDelete(sermon.title, sermon.audio_url)}
                   style={{ 
                     background: '#ff4d4d', 
                     color: '#fff', 

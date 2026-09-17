@@ -669,7 +669,7 @@ const HomePage = () => {
 
         <div className="footer-bottom">
           <p>© {new Date().getFullYear()} Proskeun Global Ministry. All rights reserved.</p>
-          <Link to="/login" className="portal-link">Pastor Portal</Link>
+          <Link to="/login" className="portal-link">Pastor's Portal</Link>
         </div>
       </footer>
     </div>
