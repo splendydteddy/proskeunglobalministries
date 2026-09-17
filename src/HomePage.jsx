@@ -256,7 +256,10 @@ const HomePage = () => {
       <section id="about" className="about-section">
         <div className="section-header">
           <h2>Our Vision & Leadership</h2>
-          <p>Proskeun Global Ministry is built on the foundation of sincere worship, word accuracy, prayer, and authentic community.</p>
+          <p>At Proskeun Global Ministry, our mission is clear,
+
+
+To change and transform lives through the teaching of the Word and prayer. We are a ministry that prioritizes spiritual growth and maturity for every believer. Our heart is to see lives truly transformed by the power of God and to raise a family of believers rooted in love, truth, and service.</p>
         </div>
 
         <div className="leadership-cards">
