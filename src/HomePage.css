@@ -355,6 +355,9 @@ section {
   padding-bottom: clamp(2rem, 5vw, var(--space-6));
   overflow: hidden;
   z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(3, 8, 56, 0.88) 0%, rgba(1, 4, 27, 0.94) 100%),
+    url('/proskeun.jpg') center center / cover no-repeat;
 }
 
 /* Ambient Radial Glow Effect */
@@ -536,6 +539,11 @@ section {
   position: relative;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  appearance: none;
 }
 
 .click-hint {
@@ -987,32 +995,160 @@ section {
   border-color: var(--gold);
 }
 
+.form-feedback {
+  max-width: 600px;
+  margin: 0 auto var(--space-2);
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 0.92rem;
+  text-align: center;
+}
+
+.form-feedback--success {
+  background: rgba(46, 125, 50, 0.2);
+  border: 1px solid #66bb6a;
+  color: #c8e6c9;
+}
+
+.form-feedback--error {
+  background: rgba(198, 40, 40, 0.15);
+  border: 1px solid #ef5350;
+  color: #ffcdd2;
+}
+
+.sermon-archive-link {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.sermon-archive-link a {
+  color: var(--gold);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.btn-copy-account {
+  margin-top: var(--space-2);
+  background: var(--gold-soft);
+  border: 1px solid var(--gold);
+  color: var(--gold-bright);
+  padding: 0.55em 1.2em;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.88rem;
+}
+
+.giving-note {
+  margin-top: var(--space-2);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.pre-footer-cta {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  text-align: center;
+  padding: clamp(2.5rem, 5vw, var(--space-5)) clamp(1rem, 4vw, var(--space-4));
+}
+
+.pre-footer-cta h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  margin-bottom: var(--space-2);
+}
+
+.pre-footer-cta p {
+  margin-bottom: var(--space-3);
+}
+
+.footer-address {
+  margin-top: var(--space-2);
+  font-size: 0.88rem;
+}
+
+.nav-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.55);
+  border: none;
+  cursor: pointer;
+}
+
+.gallery-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(3, 8, 56, 0.75);
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.gallery-nav--prev { left: 0.75rem; }
+.gallery-nav--next { right: 0.75rem; }
+
+.gallery-modal {
+  position: relative;
+}
+
 /* FAQ Section */
 .faq-section { max-width: var(--max-width); margin: 0 auto; }
 
-.faq-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: clamp(1rem, 2vw, var(--space-3));
+.faq-accordion {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
 }
 
-.faq-card {
+.faq-item {
   background: var(--royal);
   border: 1px solid var(--royal-line);
   border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.faq-item--open {
+  border-color: var(--gold);
+}
+
+.faq-question {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
   padding: clamp(1rem, 2vw, var(--space-3));
-  position: relative;
-  z-index: 1;
-}
-
-.faq-card h4 {
+  background: transparent;
+  border: none;
+  color: var(--white);
+  font-family: var(--font-display);
   font-size: 1.05rem;
-  color: var(--gold);
-  margin-bottom: 0.5em;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
 }
 
-.faq-card p {
+.faq-icon {
+  color: var(--gold);
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.faq-answer {
+  padding: 0 clamp(1rem, 2vw, var(--space-3)) clamp(1rem, 2vw, var(--space-3));
+}
+
+.faq-answer p {
   font-size: 0.9rem;
+  line-height: 1.55;
 }
 
 /* Modals */
@@ -1247,6 +1383,16 @@ section {
   .nav-links a {
     font-size: 1rem;
   }
+
+  .nav-mobile-cta {
+    display: block;
+    width: 100%;
+    padding: 0 1.5rem;
+  }
+
+  .nav-mobile-cta .btn-primary {
+    width: 100%;
+  }
 }
 
 @media (max-width: 900px) {
@@ -1293,9 +1439,35 @@ section {
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html,
+  body,
+  .church-site {
+    scroll-behavior: auto !important;
+  }
+
+  .hero-section::before {
+    animation: none;
+  }
+
+  .cell-card:hover,
+  .brand-logo:hover {
+    transform: none;
+  }
+
+  .modal-overlay,
+  .modal-content {
+    animation: none;
+  }
+
+  .nav-links {
+    transition: none;
+  }
+}
+
 @media (max-width: 480px) {
   .schedule-grid { grid-template-columns: 1fr; }
-  .cells-grid, .giving-grid, .faq-grid { grid-template-columns: 1fr; }
+  .cells-grid, .giving-grid { grid-template-columns: 1fr; }
   .brand-sub { letter-spacing: 0.1em; }
   .pastor-bg-container { height: 280px; }
 }

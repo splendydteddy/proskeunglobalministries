@@ -1,155 +1,84 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import { useNavigate, Link } from 'react-router-dom';
+import './AdminPages.css';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) navigate('/admin/upload', { replace: true });
+    });
+  }, [navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    
-    if (error) {
-      setError(error.message);
-    } else {
-      navigate('/admin/upload');
+    setError(null);
+    setSubmitting(true);
+
+    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+
+    if (signInError) {
+      setError('Sign in failed. Please check your email and password and try again.');
+      setSubmitting(false);
+      return;
     }
+
+    navigate('/admin/upload');
   };
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: '#060c21',
-      padding: '20px',
-      fontFamily: 'sans-serif'
-    }}>
-      <div style={{
-        background: '#1a2b51',
-        padding: '40px',
-        borderRadius: '12px',
-        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.5)',
-        width: '100%',
-        maxWidth: '400px',
-        borderTop: '5px solid #e5ca6e' // Updated gold
-      }}>
-        <h2 style={{ 
-          marginBottom: '8px', 
-          textAlign: 'center', 
-          color: '#e5ca6e' // Updated gold
-        }}>
-          Pastor Portal
-        </h2>
-        <p style={{ 
-          textAlign: 'center', 
-          color: '#e0e0e0', 
-          fontSize: '14px', 
-          marginBottom: '25px' 
-        }}>
-          Proskeun Global Ministries
-        </p>
-        
-        {error && (
-          <div style={{ 
-            backgroundColor: '#ffebee', 
-            color: '#c62828', 
-            padding: '10px', 
-            borderRadius: '6px', 
-            marginBottom: '15px', 
-            fontSize: '14px' 
-          }}>
-            {error}
-          </div>
-        )}
+    <div className="admin-login-wrap">
+      <div className="admin-login-card">
+        <h2>Pastor Portal</h2>
+        <p className="admin-login-sub">Proskeun Global Ministries</p>
 
-        <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+        {error && <div className="admin-login-error">{error}</div>}
+
+        <form onSubmit={handleLogin} className="admin-form">
           <div>
-            <label style={{ 
-              display: 'block', 
-              marginBottom: '5px', 
-              fontSize: '14px', 
-              color: '#e5ca6e', // Updated gold
-              fontWeight: '500' 
-            }}>
+            <label className="admin-label" htmlFor="login-email">
               Email Address
             </label>
-            <input 
-              type="email" 
-              placeholder="pastor@proskeun.com" 
-              value={email} 
-              onChange={(e) => setEmail(e.target.value)} 
+            <input
+              id="login-email"
+              type="email"
+              placeholder="pastor@proskeun.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
-              style={{ 
-                width: '100%', 
-                padding: '12px', 
-                borderRadius: '6px', 
-                border: '1px solid #555', 
-                backgroundColor: '#0e1835', 
-                color: '#fff', 
-                fontSize: '14px', 
-                boxSizing: 'border-box' 
-              }}
+              autoComplete="email"
             />
           </div>
 
           <div>
-            <label style={{ 
-              display: 'block', 
-              marginBottom: '5px', 
-              fontSize: '14px', 
-              color: '#e5ca6e', // Updated gold
-              fontWeight: '500' 
-            }}>
+            <label className="admin-label" htmlFor="login-password">
               Password
             </label>
-            <input 
-              type="password" 
-              placeholder="••••••••" 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)} 
+            <input
+              id="login-password"
+              type="password"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
-              style={{ 
-                width: '100%', 
-                padding: '12px', 
-                borderRadius: '6px', 
-                border: '1px solid #555',
-                backgroundColor: '#0e1835',
-                color: '#fff',
-                fontSize: '14px', 
-                boxSizing: 'border-box' 
-              }}
+              autoComplete="current-password"
             />
           </div>
 
-          <button type="submit" style={{ 
-            marginTop: '10px', 
-            padding: '12px', 
-            background: '#e5ca6e', // Updated gold
-            color: '#060c21', 
-            border: 'none', 
-            borderRadius: '6px', 
-            fontSize: '16px', 
-            fontWeight: '700', 
-            cursor: 'pointer',
-            transition: 'opacity 0.2s'
-          }}>
-            Sign In
+          <button type="submit" className="admin-btn" disabled={submitting}>
+            {submitting ? 'Signing in…' : 'Sign In'}
           </button>
         </form>
 
-        <div style={{ marginTop: '20px', textAlign: 'center' }}>
-          <Link to="/" style={{ 
-            color: '#e5ca6e', // Updated gold
-            textDecoration: 'none', 
-            fontSize: '14px', 
-            fontWeight: '550' 
-          }}>
-            &larr; Return to Home
+        <div className="admin-login-footer">
+          <Link to="/" className="admin-link">
+            ← Return to Home
           </Link>
         </div>
       </div>

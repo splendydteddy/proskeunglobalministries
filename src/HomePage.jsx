@@ -1,6 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from './supabaseClient';
+import {
+  MAIN_CAMPUS,
+  SUNDAY_SERVICE_DIRECTIONS_URL,
+  IMAGE_FALLBACK,
+  mapsSearchUrl,
+} from './constants/site';
 import './HomePage.css';
 
 const scheduleData = [
@@ -21,7 +27,7 @@ const cellsData = [
   },
   { 
     name: 'Uwasota Cell', 
-    location: 'The Proskeun Center, 15 Nova Road, Opp Uwasota Busstop Ugbowo, Benin city.', 
+    location: MAIN_CAMPUS.display,
     leader: 'Pastor Chinonso',
     details: 'for inquiries, contact: +2347034539013'
   },
@@ -86,6 +92,10 @@ const faqData = [
   {
     q: 'How do I join a House Cell near me?',
     a: 'Check our House Cell Centers list above to find a location in your axis, or send us a message through the contact form.'
+  },
+  {
+    q: 'Where is the church located?',
+    a: `Sunday service and our main center are at ${MAIN_CAMPUS.display} Use "Get Directions" on the homepage or contact form for map links.`
   }
 ];
 
@@ -107,9 +117,19 @@ const HomePage = () => {
   const [galleryFilter, setGalleryFilter] = useState('all');
   const [activeImage, setActiveImage] = useState(null);
 
-  // Latest Sermon state from Supabase (Single Object)
   const [latestSermon, setLatestSermon] = useState(null);
   const [sermonsLoading, setSermonsLoading] = useState(true);
+
+  const [contactName, setContactName] = useState('');
+  const [contactEmail, setContactEmail] = useState('');
+  const [contactMessage, setContactMessage] = useState('');
+  const [contactSubmitting, setContactSubmitting] = useState(false);
+  const [contactFeedback, setContactFeedback] = useState(null);
+
+  const [openFaqIndex, setOpenFaqIndex] = useState(null);
+  const [accountCopied, setAccountCopied] = useState(false);
+
+  const GIVING_ACCOUNT = '0126408317';
 
   useEffect(() => {
     fetchLatestSermon();
@@ -121,7 +141,7 @@ const HomePage = () => {
         .from('sermon')
         .select('*')
         .order('date', { ascending: false })
-        .limit(1); // <-- MAGIC FIX: Pulls ONLY the single newest message
+        .limit(1);
 
       if (error) throw error;
       if (data && data.length > 0) {
@@ -134,9 +154,67 @@ const HomePage = () => {
     }
   };
 
-  const filteredGalleryItems = galleryFilter === 'all' 
-    ? galleryData 
-    : galleryData.filter(item => item.category === galleryFilter);
+  const filteredGalleryItems = galleryFilter === 'all'
+    ? galleryData
+    : galleryData.filter((item) => item.category === galleryFilter);
+
+  const handleContactSubmit = async (e) => {
+    e.preventDefault();
+    setContactFeedback(null);
+    setContactSubmitting(true);
+
+    try {
+      const { error } = await supabase.from('prayer_request').insert([
+        {
+          full_name: contactName.trim(),
+          email: contactEmail.trim(),
+          message: contactMessage.trim(),
+        },
+      ]);
+
+      if (error) throw error;
+
+      setContactFeedback({
+        type: 'success',
+        text: 'Thank you. Your request has been sent to our pastoral team.',
+      });
+      setContactName('');
+      setContactEmail('');
+      setContactMessage('');
+    } catch {
+      setContactFeedback({
+        type: 'error',
+        text: 'We could not send your request right now. Please try again or contact us directly.',
+      });
+    } finally {
+      setContactSubmitting(false);
+    }
+  };
+
+  const copyAccountNumber = async () => {
+    try {
+      await navigator.clipboard.writeText(GIVING_ACCOUNT);
+      setAccountCopied(true);
+      setTimeout(() => setAccountCopied(false), 2500);
+    } catch {
+      setAccountCopied(false);
+    }
+  };
+
+  const galleryIndex = activeImage
+    ? filteredGalleryItems.findIndex((item) => item.id === activeImage.id)
+    : -1;
+
+  const stepGallery = useCallback(
+    (direction) => {
+      if (galleryIndex < 0 || filteredGalleryItems.length === 0) return;
+      const next =
+        (galleryIndex + direction + filteredGalleryItems.length) %
+        filteredGalleryItems.length;
+      setActiveImage(filteredGalleryItems[next]);
+    },
+    [galleryIndex, filteredGalleryItems],
+  );
 
   const handleNavClick = (e, targetId) => {
     e.preventDefault();
@@ -155,9 +233,13 @@ const HomePage = () => {
         setSelectedCell(null);
         setActiveImage(null);
       }
+      if (activeImage && e.key === 'ArrowRight') stepGallery(1);
+      if (activeImage && e.key === 'ArrowLeft') stepGallery(-1);
     };
 
-    if (showSundayModal || selectedCell || activeImage) {
+    const modalOpen = showSundayModal || selectedCell || activeImage || isNavOpen;
+
+    if (modalOpen) {
       document.body.style.overflow = 'hidden';
       window.addEventListener('keydown', handleKeyDown);
     } else {
@@ -168,10 +250,19 @@ const HomePage = () => {
       document.body.style.overflow = 'unset';
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [showSundayModal, selectedCell, activeImage]);
+  }, [showSundayModal, selectedCell, activeImage, isNavOpen, stepGallery]);
 
   return (
     <div className="church-site">
+      {isNavOpen && (
+        <button
+          type="button"
+          className="nav-backdrop"
+          aria-label="Close navigation menu"
+          onClick={() => setIsNavOpen(false)}
+        />
+      )}
+
       <nav className="navbar">
         <div className="nav-brand">
           <img 
@@ -256,10 +347,7 @@ const HomePage = () => {
       <section id="about" className="about-section">
         <div className="section-header">
           <h2>Our Vision & Leadership</h2>
-          <p>At Proskeun Global Ministry, our mission is clear,
-
-
-To change and transform lives through the teaching of the Word and prayer. We are a ministry that prioritizes spiritual growth and maturity for every believer. Our heart is to see lives truly transformed by the power of God and to raise a family of believers rooted in love, truth, and service.</p>
+          <p>At Proskeun Global Ministry, our mission is clear, To change and transform lives through the teaching of the Word and prayer. We are a ministry that prioritizes spiritual growth and maturity for every believer. Our heart is to see lives truly transformed by the power of God and to raise a family of believers rooted in love, truth, and service.</p>
         </div>
 
         <div className="leadership-cards">
@@ -270,10 +358,10 @@ To change and transform lives through the teaching of the Word and prayer. We ar
                 alt="Pastor Osasumwen Eghianruwa" 
                 className="pastor-img"
                 loading="lazy"
-                onError={(e) => { 
-                  e.target.onerror = null; 
-                  e.target.src="https://via.placeholder.com/400x500?text=Pastor+Osas"; 
-                }} 
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = IMAGE_FALLBACK;
+                }}
               />
             </div>
             <div className="leader-card-content">
@@ -290,10 +378,10 @@ To change and transform lives through the teaching of the Word and prayer. We ar
                 alt="Pastor Joy Eghianruwa" 
                 className="pastor-img"
                 loading="lazy"
-                onError={(e) => { 
-                  e.target.onerror = null; 
-                  e.target.src="https://via.placeholder.com/400x500?text=Pastor+Joy"; 
-                }} 
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = IMAGE_FALLBACK;
+                }}
               />
             </div>
             <div className="leader-card-content">
@@ -333,16 +421,17 @@ To change and transform lives through the teaching of the Word and prayer. We ar
 
         <div className="cells-grid">
           {cellsData.map((cell) => (
-            <div 
-              key={cell.name} 
-              className="cell-card clickable" 
+            <button
+              type="button"
+              key={cell.name}
+              className="cell-card clickable"
               onClick={() => setSelectedCell(cell)}
             >
               <span className="icon" aria-hidden="true">📍</span>
               <h3>{cell.name}</h3>
               <p>Location: {cell.location}</p>
               <span className="click-hint">View Directions →</span>
-            </div>
+            </button>
           ))}
         </div>
       </section>
@@ -354,7 +443,6 @@ To change and transform lives through the teaching of the Word and prayer. We ar
           <p>Access audio messages uploaded by ministers or catch up via our telegram channel.</p>
         </div>
 
-        {/* SINGLE LATEST SERMON CARD SECTION */}
         <div className="sermons-archive-container">
           <h3>Latest Uploaded Message</h3>
           
@@ -394,17 +482,13 @@ To change and transform lives through the teaching of the Word and prayer. We ar
                 </audio>
               </div>
 
-              {/* Link leading over to the separate archive page */}
-              <div style={{ marginTop: '20px', textAlign: 'center' }}>
-                <Link to="/messages" style={{ color: 'var(--accent-color, #d4af37)', fontWeight: 'bold', textDecoration: 'underline' }}>
-                  View All Past Messages in the Archive →
-                </Link>
+              <div className="sermon-archive-link">
+                <Link to="/messages">View All Past Messages in the Archive →</Link>
               </div>
             </div>
           )}
         </div>
 
-        {/* TELEGRAM ARCHIVE CARD */}
         <div className="media-card">
           <div className="media-info">
             <span className="recap-tag">Audio & Messages</span>
@@ -430,7 +514,6 @@ To change and transform lives through the teaching of the Word and prayer. We ar
           <p>A glimpse into the joy, power, and fellowship of Proskeun Global Ministry.</p>
         </div>
 
-        {/* Filter Buttons */}
         <div className="gallery-filters">
           <button className={galleryFilter === 'all' ? 'filter-btn active' : 'filter-btn'} onClick={() => setGalleryFilter('all')}>All</button>
           <button className={galleryFilter === 'worship' ? 'filter-btn active' : 'filter-btn'} onClick={() => setGalleryFilter('worship')}>Worship</button>
@@ -438,7 +521,6 @@ To change and transform lives through the teaching of the Word and prayer. We ar
           <button className={galleryFilter === 'outreach' ? 'filter-btn active' : 'filter-btn'} onClick={() => setGalleryFilter('outreach')}>Outreach</button>
         </div>
 
-        {/* Image Grid */}
         <div className="gallery-grid">
           {filteredGalleryItems.map(item => (
             <div key={item.id} className="gallery-item" onClick={() => setActiveImage(item)}>
@@ -464,35 +546,68 @@ To change and transform lives through the teaching of the Word and prayer. We ar
             <h3>Bank Transfer</h3>
             <p><strong>Bank:</strong> Wema Bank</p>
             <p><strong>Account Name:</strong> Proskeun Global Ministries</p>
-            <p><strong>Account Number:</strong> 0126408317</p>
+            <p><strong>Account Number:</strong> {GIVING_ACCOUNT}</p>
+            <button type="button" className="btn-copy-account" onClick={copyAccountNumber}>
+              {accountCopied ? 'Copied!' : 'Copy account number'}
+            </button>
+            <p className="giving-note">Your giving supports ministry operations, outreach, and the spread of the gospel.</p>
           </div>
         </div>
       </section>
 
-      {/* CONTACT SECTION */}
+      {/* CONTACT / PRAYER SECTION */}
       <section id="contact" className="contact-section">
         <div className="section-header">
           <h2>Prayer & Counseling</h2>
           <p>Connect with our pastoral team for guidance, prayer, and one-on-one counseling.</p>
         </div>
 
-        <form className="contact-form" onSubmit={(e) => e.preventDefault()}>
+        {contactFeedback && (
+          <div className={`form-feedback form-feedback--${contactFeedback.type}`} role="status">
+            {contactFeedback.text}
+          </div>
+        )}
+
+        <form className="contact-form" onSubmit={handleContactSubmit}>
           <div className="form-group">
             <label htmlFor="user-fullname">Full Name</label>
-            <input id="user-fullname" type="text" placeholder="Full Name" required />
+            <input
+              id="user-fullname"
+              type="text"
+              placeholder="Full Name"
+              value={contactName}
+              onChange={(e) => setContactName(e.target.value)}
+              required
+            />
           </div>
 
           <div className="form-group">
             <label htmlFor="user-email">Email Address</label>
-            <input id="user-email" type="email" placeholder="Email Address" required />
+            <input
+              id="user-email"
+              type="email"
+              placeholder="Email Address"
+              value={contactEmail}
+              onChange={(e) => setContactEmail(e.target.value)}
+              required
+            />
           </div>
 
           <div className="form-group">
             <label htmlFor="user-message">Prayer Request / Inquiry</label>
-            <textarea id="user-message" placeholder="Write your prayer request or counseling inquiry here..." rows="5" required></textarea>
+            <textarea
+              id="user-message"
+              placeholder="Write your prayer request or counseling inquiry here..."
+              rows="5"
+              value={contactMessage}
+              onChange={(e) => setContactMessage(e.target.value)}
+              required
+            />
           </div>
 
-          <button type="submit" className="btn-primary">Send Request</button>
+          <button type="submit" className="btn-primary" disabled={contactSubmitting}>
+            {contactSubmitting ? 'Sending…' : 'Send Request'}
+          </button>
         </form>
       </section>
 
@@ -529,13 +644,36 @@ To change and transform lives through the teaching of the Word and prayer. We ar
           <h2>First-Time Visitors FAQ</h2>
           <p>Common questions answered to make your first visit smooth.</p>
         </div>
-        <div className="faq-grid">
-          {faqData.map((item, index) => (
-            <div key={index} className="faq-card">
-              <h4>{item.q}</h4>
-              <p>{item.a}</p>
-            </div>
-          ))}
+        <div className="faq-accordion">
+          {faqData.map((item, index) => {
+            const isOpen = openFaqIndex === index;
+            const panelId = `faq-panel-${index}`;
+            const buttonId = `faq-button-${index}`;
+            return (
+              <div key={item.q} className={`faq-item${isOpen ? ' faq-item--open' : ''}`}>
+                <button
+                  type="button"
+                  id={buttonId}
+                  className="faq-question"
+                  aria-expanded={isOpen}
+                  aria-controls={panelId}
+                  onClick={() => setOpenFaqIndex(isOpen ? null : index)}
+                >
+                  <span>{item.q}</span>
+                  <span className="faq-icon" aria-hidden="true">{isOpen ? '−' : '+'}</span>
+                </button>
+                <div
+                  id={panelId}
+                  role="region"
+                  aria-labelledby={buttonId}
+                  className="faq-answer"
+                  hidden={!isOpen}
+                >
+                  <p>{item.a}</p>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
 
@@ -548,16 +686,16 @@ To change and transform lives through the teaching of the Word and prayer. We ar
             <p className="modal-subtitle">Starts 7:30 AM | Believers' Institute & Main Glorious Service</p>
             
             <div className="modal-gallery">
-              <img src="/front.webp" alt="Church Front View" loading="lazy" onError={(e) => { e.target.onerror = null; e.target.src="https://via.placeholder.com/300x200?text=Church+Front"; }} />
-              <img src="/side.webp" alt="Church Side View" loading="lazy" onError={(e) => { e.target.onerror = null; e.target.src="https://via.placeholder.com/300x200?text=Church+Side"; }} />
+              <img src="/front.webp" alt="Church Front View" loading="lazy" onError={(e) => { e.target.onerror = null; e.target.src = IMAGE_FALLBACK; }} />
+              <img src="/side.webp" alt="Church Side View" loading="lazy" onError={(e) => { e.target.onerror = null; e.target.src = IMAGE_FALLBACK; }} />
             </div>
 
             <h3>Location & Directions</h3>
-            <p className="modal-address">📍 The Proskeun Center, 15 Nova Road, Opp Uwasota Busstop Ugbowo, Benin city.</p>
-            <a 
-              href="https://www.google.com/maps/dir//Proskeun+global+ministry,+12a+Ogbeide+St,+Uselu,+Benin+City+300103,+Edo/@6.394096,5.6094877,7360m/data=!3m1!1e3!4m8!4m7!1m0!1m5!1m1!1s0x10472d004e8f03cb:0x2a72fc5135325510!2m2!1d5.6119774!2d6.384577?entry=ttu&g_ep=EgoyMDI2MDgyNi4wIKXMDSoASAFQAw%3D%3D" 
-              target="_blank" 
-              rel="noopener noreferrer" 
+            <p className="modal-address">📍 {MAIN_CAMPUS.display}</p>
+            <a
+              href={SUNDAY_SERVICE_DIRECTIONS_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className="btn-primary modal-directions-btn"
             >
               Get Directions on Google Maps 📍
@@ -593,10 +731,10 @@ To change and transform lives through the teaching of the Word and prayer. We ar
               <p><strong>Meeting Time:</strong> Thursdays @ 4:00 PM – 5:00 PM</p>
             </div>
 
-            <a 
-              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedCell.location)}`} 
-              target="_blank" 
-              rel="noopener noreferrer" 
+            <a
+              href={mapsSearchUrl(selectedCell.location)}
+              target="_blank"
+              rel="noopener noreferrer"
               className="btn-primary modal-directions-btn"
             >
               Open Location in Maps 🗺️
@@ -610,6 +748,26 @@ To change and transform lives through the teaching of the Word and prayer. We ar
         <div className="modal-overlay" onClick={() => setActiveImage(null)} role="dialog" aria-modal="true">
           <div className="modal-content gallery-modal" onClick={e => e.stopPropagation()}>
             <button className="close-btn" onClick={() => setActiveImage(null)} aria-label="Close modal">×</button>
+            {filteredGalleryItems.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  className="gallery-nav gallery-nav--prev"
+                  aria-label="Previous image"
+                  onClick={() => stepGallery(-1)}
+                >
+                  ‹
+                </button>
+                <button
+                  type="button"
+                  className="gallery-nav gallery-nav--next"
+                  aria-label="Next image"
+                  onClick={() => stepGallery(1)}
+                >
+                  ›
+                </button>
+              </>
+            )}
             <img src={activeImage.img} alt={activeImage.title} className="lightbox-img" />
             <div className="lightbox-info">
               <span className="recap-tag">{activeImage.category}</span>
@@ -620,12 +778,20 @@ To change and transform lives through the teaching of the Word and prayer. We ar
         </div>
       )}
 
-      {/* FOOTER */}
+      <section className="pre-footer-cta" aria-labelledby="pre-footer-heading">
+        <h2 id="pre-footer-heading">Ready to connect with us?</h2>
+        <p>Join us this Sunday for worship, the Word, and fellowship.</p>
+        <button type="button" className="btn-primary" onClick={() => setShowSundayModal(true)}>
+          Plan Your Visit
+        </button>
+      </section>
+
       <footer className="site-footer">
         <div className="footer-content">
           <div className="footer-info">
             <h3>PROSKEUN GLOBAL MINISTRY</h3>
-            <p>"Atmosphere of Joy and Fire"</p>
+            <p>&quot;Atmosphere of Joy and Fire&quot;</p>
+            <p className="footer-address">📍 {MAIN_CAMPUS.display}</p>
           </div>
 
           <div className="footer-links">
@@ -645,34 +811,34 @@ To change and transform lives through the teaching of the Word and prayer. We ar
             <p>Follow <strong>@Proskeun global ministries</strong></p>
             <ul className="social-icons-list">
               <li>
-                <a href="https://www.tiktok.com/@proskeunministry?_r=1&_t=ZS-98xLb1Id5xX" target="_blank" rel="noreferrer" aria-label="TikTok">
-                  <svg className="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+                <a href="https://www.tiktok.com/@proskeunministry?_r=1&_t=ZS-98xLb1Id5xX" target="_blank" rel="noreferrer" className="social-icon-link" aria-label="TikTok">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 3 15.69 6.33 6.33 0 0 0 9.33 22a6.33 6.33 0 0 0 6.33-6.33V9.17a8.21 8.21 0 0 0 4.93 1.58v-3.48a4.85 4.85 0 0 1-1-.58z"/></svg>
                 </a>
               </li>
               <li>
-                <a href="https://t.me/proskeuncity" target="_blank" rel="noreferrer" aria-label="Telegram">
-                  <svg className="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2m5.05 7.15-1.55 7.31c-.12.54-.44.67-.89.42l-2.47-1.82-1.19 1.15c-.13.13-.24.24-.49.24l.18-2.52 4.59-4.15c.2-.18-.04-.28-.31-.1l-5.67 3.57-2.44-.76c-.53-.17-.54-.53.11-.78l9.53-3.67c.44-.16.83.1.69.78Z"/></svg>
+                <a href="https://t.me/proskeuncity" target="_blank" rel="noreferrer" className="social-icon-link" aria-label="Telegram">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.03-1.99 1.27-5.62 3.72-.53.36-1.01.54-1.44.53-.47-.01-1.38-.27-2.06-.49-.83-.27-1.49-.42-1.43-.89.03-.25.38-.51 1.07-.78 4.18-1.82 6.98-3.02 8.4-3.61 4-.1.66 4.99.78 4.99.08 0 .27.02.37.1.1.08.13.19.14.27 0 .06.01.24 0 .38z"/></svg>
                 </a>
               </li>
               <li>
-                <a href="https://www.facebook.com/profile.php?id=61567927055011" target="_blank" rel="noreferrer" aria-label="Facebook">
-                  <svg className="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12c0-5.523-4.477-10-10-10z"/></svg>
+                <a href="https://facebook.com" target="_blank" rel="noreferrer" className="social-icon-link" aria-label="Facebook">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/></svg>
                 </a>
               </li>
               <li>
-                <a href="https://youtube.com/@houseofshamba?si=gJzWZ4r9Reo2sUhx" target="_blank" rel="noreferrer" aria-label="YouTube">
-                  <svg className="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                  </svg>
+                <a href="https://youtube.com" target="_blank" rel="noreferrer" className="social-icon-link" aria-label="YouTube">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
                 </a>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="footer-bottom">
-          <p>© {new Date().getFullYear()} Proskeun Global Ministry. All rights reserved.</p>
-          <Link to="/login" className="portal-link">Pastor's Portal</Link>
+       <div className="footer-bottom">
+          <p>&copy; {new Date().getFullYear()} Proskeun Global Ministry. All rights reserved.</p>
+          <p>
+            <Link to="/login" className="admin-portal-link">Pastor&apos;s Portal</Link>
+          </p>
         </div>
       </footer>
     </div>

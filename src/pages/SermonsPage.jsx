@@ -22,10 +22,7 @@ export default function SermonsPage() {
 
   // Safe direct download handling
   const handleDownload = async (fileUrl, title, id) => {
-    if (!fileUrl) {
-      alert('Audio file URL is missing.');
-      return;
-    }
+    if (!fileUrl) return;
 
     try {
       setDownloadingId(id);
@@ -87,7 +84,7 @@ export default function SermonsPage() {
 
         {/* Loading / Empty States */}
         {loading ? (
-          <p style={{ textAlign: 'center', color: '#aaa', padding: '40px' }}>Loading messages...</p>
+          <p style={{ textAlign: 'center', color: '#aaa', padding: '40px' }}>Loading messages…</p>
         ) : sermons.length === 0 ? (
           <div style={{ background: '#112240', padding: '40px', borderRadius: '12px', textAlign: 'center', boxShadow: '0 4px 15px rgba(0,0,0,0.2)' }}>
             <p style={{ color: '#aaa', fontSize: '16px', margin: 0 }}>No messages uploaded yet. Check back soon!</p>
