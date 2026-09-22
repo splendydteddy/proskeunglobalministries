@@ -105,7 +105,10 @@ export default function UploadPortal() {
     try {
       setUploading(true);
 
-      const fileName = `${Date.now()}_${audioFile.name.replace(/\s+/g, '_')}`;
+      // Sanitize the filename to prevent "Invalid key" errors on mobile and web
+      const safeName = audioFile.name.replace(/[^a-zA-Z0-9_.-]/g, '_');
+      const fileName = `${Date.now()}_${safeName}`;
+
       const { error: storageError } = await supabase.storage
         .from('sermon-audio')
         .upload(fileName, audioFile, { contentType: audioFile.type || 'audio/mpeg' });
