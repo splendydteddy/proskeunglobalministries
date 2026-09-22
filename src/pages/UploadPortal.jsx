@@ -66,7 +66,8 @@ export default function UploadPortal() {
       if (!prayerRes.error) {
         setPrayerRequests(prayerRes.data || []);
       }
-    } catch {
+    } catch (err) {
+      console.error(err);
       setStatus({
         type: 'error',
         message: 'Could not load admin data. Please refresh the page.',
@@ -136,10 +137,11 @@ export default function UploadPortal() {
       const fileInput = document.getElementById('sermon-audio-input');
       if (fileInput) fileInput.value = '';
       fetchAdminData();
-    } catch {
+    } catch (err) {
+      console.error('Upload error:', err);
       setStatus({
         type: 'error',
-        message: 'Upload failed. Please try again. If this continues, contact your site administrator.',
+        message: `Upload failed: ${err.message || 'Please try again.'}`,
       });
     } finally {
       setUploading(false);
@@ -169,7 +171,8 @@ export default function UploadPortal() {
       setStatus({ type: 'success', message: 'Message deleted successfully.' });
       setPendingDeleteSermonId(null);
       fetchAdminData();
-    } catch {
+    } catch (err) {
+      console.error(err);
       setStatus({ type: 'error', message: 'Could not delete this message. Please try again.' });
     } finally {
       setDeletingId(null);
