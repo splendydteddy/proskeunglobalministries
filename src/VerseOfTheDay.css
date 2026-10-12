@@ -1,0 +1,143 @@
+/* Compact Floating Drop-Down Container */
+.votd-dropdown-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  max-width: 330px;
+  width: calc(100% - 40px);
+  opacity: 0;
+  touch-action: none;
+  transition: opacity 0.4s ease;
+}
+
+.votd-dropdown-container.show {
+  opacity: 1;
+}
+
+/* Compact Glassmorphism Card */
+.votd-dropdown-card {
+  position: relative;
+  overflow: hidden; /* Clips the background watermark within rounded corners */
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(30, 41, 59, 0.98));
+  border: 1px solid rgba(229, 186, 115, 0.4);
+  border-radius: 14px;
+  padding: 0.85rem 1.1rem;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5), 
+              0 0 15px rgba(229, 186, 115, 0.12);
+  backdrop-filter: blur(10px);
+  color: #ffffff;
+  user-select: none;
+}
+
+/* Proskeun Logo Background Watermark */
+.votd-bg-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 170px;
+  height: 170px;
+  transform: translate(-50%, -40%);
+  background-image: url('/logo.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0.08; /* Soft watermark opacity so text remains crystal clear */
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Header & Date Badge */
+.votd-header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 0.55rem;
+  padding-right: 22px; /* Space for close button */
+}
+
+.votd-icon {
+  font-size: 0.95rem;
+}
+
+.votd-badge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #e5ba73;
+}
+
+.votd-date {
+  font-size: 0.62rem;
+  color: rgba(255, 255, 255, 0.55);
+  font-weight: 500;
+}
+
+/* Close Button */
+.votd-close-btn {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  z-index: 2;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.votd-close-btn:hover {
+  color: #e5ba73;
+  transform: scale(1.15);
+}
+
+/* Content Container above watermark */
+.votd-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Verse Text & Reference */
+.votd-text {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 0.88rem;
+  font-style: italic;
+  color: #f8fafc;
+  line-height: 1.45;
+  margin: 0 0 0.4rem 0;
+}
+
+.votd-ref {
+  display: block;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #ffd700;
+  letter-spacing: 0.03em;
+  font-style: normal;
+  text-align: right;
+}
+
+.votd-loading {
+  position: relative;
+  z-index: 1;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.65);
+  font-style: italic;
+  margin: 0;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 600px) {
+  .votd-dropdown-container {
+    top: 15px;
+    right: 15px;
+    left: 15px;
+    max-width: none;
+  }
+}
