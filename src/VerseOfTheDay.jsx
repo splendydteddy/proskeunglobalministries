@@ -5,12 +5,14 @@ export default function VerseOfTheDay() {
   const [verseData, setVerseData] = useState({ verse: '', reference: '' });
   const [loading, setLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   // Dragging state
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const dragStartPos = useRef({ x: 0, y: 0 });
   const elementPosOnStart = useRef({ x: 0, y: 0 });
+  const hasDragged = useRef(false);
 
   // Format today's date (e.g. "Mon, Oct 12")
   const todayDate = new Date().toLocaleDateString('en-US', {
@@ -20,7 +22,6 @@ export default function VerseOfTheDay() {
   });
 
   useEffect(() => {
-    // Fetch daily verse explicitly specifying King James Version (&version=kjv)
     fetch('https://beta.ourmanna.com/api/v1/get?format=json&order=daily&version=kjv')
       .then((res) => res.json())
       .then((data) => {
@@ -35,10 +36,9 @@ export default function VerseOfTheDay() {
       })
       .catch((err) => {
         console.error('Failed to fetch verse of the day:', err);
-        // Reliable fallback in KJV
         setVerseData({
-          verse: 'Trust in the LORD with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths.',
-          reference: 'Proverbs 3:5-6 (KJV)',
+          verse: 'Trust in the LORD with all thine heart; and lean not unto thine own understanding.',
+          reference: 'Proverbs 3:5 (KJV)',
         });
         setLoading(false);
         setTimeout(() => setIsVisible(true), 300);
@@ -50,6 +50,7 @@ export default function VerseOfTheDay() {
     if (e.target.closest('.votd-close-btn')) return;
 
     setIsDragging(true);
+    hasDragged.current = false;
     dragStartPos.current = { x: e.clientX, y: e.clientY };
     elementPosOnStart.current = { ...position };
 
@@ -60,6 +61,10 @@ export default function VerseOfTheDay() {
     if (!isDragging) return;
     const deltaX = e.clientX - dragStartPos.current.x;
     const deltaY = e.clientY - dragStartPos.current.y;
+
+    if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
+      hasDragged.current = true;
+    }
 
     setPosition({
       x: elementPosOnStart.current.x + deltaX,
@@ -78,9 +83,18 @@ export default function VerseOfTheDay() {
     }
   };
 
+  const handleCardClick = () => {
+    // Only toggle expand if the user tapped/clicked without dragging
+    if (!hasDragged.current) {
+      setIsExpanded((prev) => !prev);
+    }
+  };
+
+  if (!isVisible) return null;
+
   return (
     <div
-      className={`votd-dropdown-container ${isVisible ? 'show' : ''}`}
+      className={`votd-floating-wrapper ${isExpanded ? 'expanded' : 'collapsed'}`}
       style={{
         transform: `translate(${position.x}px, ${position.y}px)`,
         cursor: isDragging ? 'grabbing' : 'grab',
@@ -88,15 +102,19 @@ export default function VerseOfTheDay() {
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
+      onClick={handleCardClick}
     >
-      <div className="votd-dropdown-card">
-        {/* Watermark background overlay */}
+      <div className="votd-card">
+        {/* Proskeun Watermark Background */}
         <div className="votd-bg-watermark" />
 
         <button
           type="button"
           className="votd-close-btn"
-          onClick={() => setIsVisible(false)}
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsVisible(false);
+          }}
           aria-label="Close Verse of the Day"
         >
           ✕
@@ -105,15 +123,20 @@ export default function VerseOfTheDay() {
         <div className="votd-header">
           <span className="votd-icon">📖</span>
           <span className="votd-badge">Verse of the Day</span>
-          <span className="votd-date">• {todayDate}</span>
+          {isExpanded && <span className="votd-date">• {todayDate}</span>}
+          {!isExpanded && <span className="votd-expand-hint">Tap to read ✨</span>}
         </div>
 
-        {loading ? (
-          <p className="votd-loading">Fetching today's scripture...</p>
-        ) : (
+        {isExpanded && (
           <div className="votd-content">
-            <blockquote className="votd-text">“{verseData.verse}”</blockquote>
-            <cite className="votd-ref">— {verseData.reference}</cite>
+            {loading ? (
+              <p className="votd-loading">Fetching today's scripture...</p>
+            ) : (
+              <>
+                <blockquote className="votd-text">“{verseData.verse}”</blockquote>
+                <cite className="votd-ref">— {verseData.reference}</cite>
+              </>
+            )}
           </div>
         )}
       </div>

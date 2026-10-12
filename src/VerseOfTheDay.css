@@ -1,65 +1,76 @@
-/* Compact Floating Drop-Down Container */
-.votd-dropdown-container {
+/* Floating Wrapper */
+.votd-floating-wrapper {
   position: fixed;
   top: 20px;
   right: 20px;
   z-index: 9999;
-  max-width: 330px;
-  width: calc(100% - 40px);
-  opacity: 0;
   touch-action: none;
-  transition: opacity 0.4s ease;
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+              opacity 0.4s ease;
 }
 
-.votd-dropdown-container.show {
-  opacity: 1;
+/* Collapsed Pill State */
+.votd-floating-wrapper.collapsed {
+  width: auto;
+  max-width: 260px;
 }
 
-/* Compact Glassmorphism Card */
-.votd-dropdown-card {
+/* Expanded Card State */
+.votd-floating-wrapper.expanded {
+  width: calc(100% - 40px);
+  max-width: 330px;
+}
+
+/* Base Card Styling */
+.votd-card {
   position: relative;
-  overflow: hidden; /* Clips the background watermark within rounded corners */
+  overflow: hidden;
   background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(30, 41, 59, 0.98));
   border: 1px solid rgba(229, 186, 115, 0.4);
-  border-radius: 14px;
-  padding: 0.85rem 1.1rem;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5), 
-              0 0 15px rgba(229, 186, 115, 0.12);
+  border-radius: 50px; /* Pill shape when collapsed */
+  padding: 0.55rem 1rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 
+              0 0 12px rgba(229, 186, 115, 0.15);
   backdrop-filter: blur(10px);
   color: #ffffff;
   user-select: none;
+  transition: border-radius 0.3s ease, padding 0.3s ease;
 }
 
-/* Proskeun Logo Background Watermark */
+.votd-floating-wrapper.expanded .votd-card {
+  border-radius: 14px; /* Square card shape when expanded */
+  padding: 0.85rem 1.1rem;
+}
+
+/* Proskeun Watermark Background */
 .votd-bg-watermark {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 170px;
-  height: 170px;
+  width: 160px;
+  height: 160px;
   transform: translate(-50%, -40%);
   background-image: url('/logo.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
-  opacity: 0.08; /* Soft watermark opacity so text remains crystal clear */
+  opacity: 0.08;
   pointer-events: none;
   z-index: 0;
 }
 
-/* Header & Date Badge */
+/* Header & Badge Layout */
 .votd-header {
   position: relative;
   z-index: 1;
   display: flex;
   align-items: center;
-  gap: 7px;
-  margin-bottom: 0.55rem;
-  padding-right: 22px; /* Space for close button */
+  gap: 6px;
+  padding-right: 20px;
 }
 
 .votd-icon {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 .votd-badge {
@@ -68,28 +79,43 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #e5ba73;
+  white-space: nowrap;
+}
+
+.votd-expand-hint {
+  font-size: 0.6rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-left: 2px;
+  white-space: nowrap;
 }
 
 .votd-date {
   font-size: 0.62rem;
   color: rgba(255, 255, 255, 0.55);
   font-weight: 500;
+  white-space: nowrap;
 }
 
 /* Close Button */
 .votd-close-btn {
   position: absolute;
-  top: 8px;
+  top: 50%;
   right: 10px;
+  transform: translateY(-50%);
   z-index: 2;
   background: transparent;
   border: none;
   color: rgba(255, 255, 255, 0.5);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   cursor: pointer;
   padding: 4px;
   line-height: 1;
   transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.votd-floating-wrapper.expanded .votd-close-btn {
+  top: 10px;
+  transform: none;
 }
 
 .votd-close-btn:hover {
@@ -97,13 +123,21 @@
   transform: scale(1.15);
 }
 
-/* Content Container above watermark */
+/* Expanded Content */
 .votd-content {
   position: relative;
   z-index: 1;
+  margin-top: 0.55rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid rgba(229, 186, 115, 0.15);
+  animation: fadeIn 0.3s ease;
 }
 
-/* Verse Text & Reference */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .votd-text {
   font-family: Georgia, 'Times New Roman', serif;
   font-size: 0.88rem;
@@ -124,8 +158,6 @@
 }
 
 .votd-loading {
-  position: relative;
-  z-index: 1;
   font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.65);
   font-style: italic;
@@ -134,10 +166,8 @@
 
 /* Mobile Adjustments */
 @media (max-width: 600px) {
-  .votd-dropdown-container {
-    top: 15px;
-    right: 15px;
-    left: 15px;
-    max-width: none;
+  .votd-floating-wrapper {
+    top: 12px;
+    right: 12px;
   }
 }
