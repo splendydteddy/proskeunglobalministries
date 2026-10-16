@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
+import './AdminPages.css'; // Reusing the clean admin & watermark layout styles
 
 export default function SermonsPage() {
   const [sermons, setSermons] = useState([]);
@@ -27,7 +28,6 @@ export default function SermonsPage() {
     try {
       setDownloadingId(id);
 
-      // Attempt to fetch the file directly via fetch to create a reliable blob download
       const response = await fetch(fileUrl);
       if (!response.ok) throw new Error('Network response was not ok');
       
@@ -44,7 +44,6 @@ export default function SermonsPage() {
       window.URL.revokeObjectURL(blobUrl);
     } catch (error) {
       console.error('Download error:', error);
-      // Fallback: open URL in a new tab if direct blob download fails due to CORS
       window.open(fileUrl, '_blank');
     } finally {
       setDownloadingId(null);
@@ -52,69 +51,57 @@ export default function SermonsPage() {
   };
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundColor: '#0a192f',
-      padding: '40px 20px',
-      fontFamily: 'sans-serif'
-    }}>
-      <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+    <div className="admin-page">
+      <div className="admin-inner">
         
         {/* Navigation back home */}
-        <div style={{ marginBottom: '20px' }}>
-          <Link to="/" style={{ color: '#d4af37', textDecoration: 'none', fontWeight: 'bold' }}>
+        <div className="admin-nav">
+          <Link to="/" className="admin-link">
             ← Back to Home
+          </Link>
+          <Link to="/admin" className="admin-link">
+            Pastor&apos;s Portal →
           </Link>
         </div>
 
         {/* Header Banner */}
-        <div style={{
-          background: 'linear-gradient(135deg, #0a192f 0%, #1d3557 100%)',
-          padding: '30px 40px',
-          borderRadius: '12px',
-          color: '#ffffff',
-          textAlign: 'center',
-          marginBottom: '30px',
-          borderBottom: '4px solid #d4af37',
-          boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-        }}>
-          <h1 style={{ margin: '0 0 8px 0', color: '#d4af37', fontSize: '28px' }}>Proskeun Messages Archive</h1>
-          <p style={{ margin: 0, color: '#e0e0e0', fontSize: '15px' }}>Listen online or download powerful audio messages from our ministry.</p>
+        <div className="admin-card" style={{ textAlign: 'center', borderTop: '5px solid var(--gold)' }}>
+          <h1 style={{ fontSize: '26px', color: 'var(--blue-accent)', margin: '0 0 8px', fontFamily: 'var(--font-display)' }}>
+            Proskeun Messages Archive
+          </h1>
+          <p className="admin-muted" style={{ margin: 0 }}>
+            Listen online or download powerful audio messages from our ministry.
+          </p>
         </div>
 
         {/* Loading / Empty States */}
         {loading ? (
-          <p style={{ textAlign: 'center', color: '#aaa', padding: '40px' }}>Loading messages…</p>
+          <p className="admin-muted" style={{ textAlign: 'center', padding: '40px' }}>Loading messages…</p>
         ) : sermons.length === 0 ? (
-          <div style={{ background: '#112240', padding: '40px', borderRadius: '12px', textAlign: 'center', boxShadow: '0 4px 15px rgba(0,0,0,0.2)' }}>
-            <p style={{ color: '#aaa', fontSize: '16px', margin: 0 }}>No messages uploaded yet. Check back soon!</p>
+          <div className="admin-card" style={{ textAlign: 'center', padding: '40px' }}>
+            <p className="admin-muted" style={{ margin: 0 }}>No messages uploaded yet. Check back soon!</p>
           </div>
         ) : (
           
           /* Sermon List */
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div className="admin-list">
             {sermons.map((sermon) => {
               const fileUrl = sermon.audio_url || sermon.audio_file_url;
               const isDownloading = downloadingId === sermon.id;
 
               return (
-                <div key={sermon.id} style={{ 
-                  background: '#112240', 
-                  padding: '25px', 
-                  borderRadius: '12px', 
-                  boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
-                  borderLeft: '5px solid #d4af37',
-                  color: '#ffffff'
-                }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px', flexWrap: 'wrap', gap: '10px' }}>
-                    <h3 style={{ margin: 0, color: '#ffffff', fontSize: '20px' }}>{sermon.title}</h3>
-                    <span style={{ fontSize: '13px', background: '#1d3557', color: '#d4af37', padding: '4px 10px', borderRadius: '20px', fontWeight: '500' }}>
+                <div key={sermon.id} className="admin-list-item" style={{ flexDirection: 'column', gap: '15px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%', flexWrap: 'wrap', gap: '10px' }}>
+                    <h4 style={{ margin: 0, fontSize: '1.2rem', color: 'var(--blue-accent)', fontFamily: 'var(--font-display)' }}>
+                      {sermon.title}
+                    </h4>
+                    <span style={{ fontSize: '12px', background: 'rgba(197, 155, 39, 0.15)', color: 'var(--gold)', padding: '4px 10px', borderRadius: '20px', fontWeight: '600' }}>
                       {sermon.date}
                     </span>
                   </div>
                   
                   {/* Custom Audio Player */}
-                  <audio controls preload="metadata" style={{ width: '100%', marginBottom: '15px', borderRadius: '8px' }}>
+                  <audio controls preload="metadata" style={{ width: '100%', borderRadius: '8px' }}>
                     <source src={fileUrl} type="audio/mpeg" />
                     Your browser does not support the audio element.
                   </audio>
@@ -124,19 +111,14 @@ export default function SermonsPage() {
                     <button 
                       onClick={() => handleDownload(fileUrl, sermon.title, sermon.id)}
                       disabled={isDownloading}
+                      className="admin-btn"
                       style={{ 
-                        background: '#d4af37', 
-                        color: '#0a192f', 
-                        border: 'none',
-                        padding: '10px 18px', 
-                        borderRadius: '6px', 
-                        fontSize: '14px',
-                        fontWeight: '700',
+                        background: 'var(--blue-accent)',
+                        color: '#FFFFFF',
                         display: 'inline-flex',
                         alignItems: 'center',
                         gap: '8px',
                         cursor: isDownloading ? 'wait' : 'pointer',
-                        boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
                         opacity: isDownloading ? 0.7 : 1
                       }}
                     >

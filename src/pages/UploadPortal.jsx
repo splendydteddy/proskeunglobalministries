@@ -52,6 +52,13 @@ export default function UploadPortal() {
     fetchAdminData();
   }, []);
 
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Good morning Pastor';
+    if (hour < 17) return 'Good afternoon Pastor';
+    return 'Good evening Pastor';
+  };
+
   const fetchAdminData = async () => {
     setLoadingList(true);
     try {
@@ -105,7 +112,6 @@ export default function UploadPortal() {
     try {
       setUploading(true);
 
-      // Sanitize the filename to prevent "Invalid key" errors on mobile and web
       const safeName = audioFile.name.replace(/[^a-zA-Z0-9_.-]/g, '_');
       const fileName = `${Date.now()}_${safeName}`;
 
@@ -209,13 +215,13 @@ export default function UploadPortal() {
         </div>
 
         <div className="admin-card">
-          <h1 style={{ fontSize: '24px', color: '#d4af37', margin: '0 0 8px' }}>
-            Pastor Admin Portal
+          <h1 style={{ fontSize: '24px', color: 'var(--blue-accent)', margin: '0 0 8px', fontFamily: 'var(--font-display)' }}>
+            {getGreeting()}
           </h1>
           <p className="admin-muted">
-            Messages in archive: <strong style={{ color: '#fff' }}>{sermons.length}</strong>
+            Messages in archive: <strong style={{ color: 'var(--text-main)' }}>{sermons.length}</strong>
             {' · '}
-            Prayer requests: <strong style={{ color: '#fff' }}>{prayerRequests.length}</strong>
+            Prayer requests: <strong style={{ color: 'var(--text-main)' }}>{prayerRequests.length}</strong>
           </p>
         </div>
 
@@ -236,14 +242,14 @@ export default function UploadPortal() {
             className={`admin-tab ${activeTab === 'prayer' ? 'admin-tab--active' : ''}`}
             onClick={() => setActiveTab('prayer')}
           >
-            Prayer & counselling
+            Prayer &amp; counselling
           </button>
         </div>
 
         {activeTab === 'sermons' && (
           <>
             <form onSubmit={handleUpload} className="admin-card admin-form">
-              <h3 style={{ color: '#fff', margin: 0 }}>Upload new message</h3>
+              <h3 style={{ color: 'var(--blue-accent)', margin: 0 }}>Upload new message</h3>
 
               <div>
                 <label className="admin-label" htmlFor="sermon-title">
@@ -287,7 +293,7 @@ export default function UploadPortal() {
               </button>
             </form>
 
-            <h2 style={{ fontSize: '20px', marginBottom: '15px' }}>Manage messages</h2>
+            <h2 style={{ fontSize: '20px', marginBottom: '15px', color: 'var(--blue-accent)', fontFamily: 'var(--font-display)' }}>Manage messages</h2>
             {loadingList ? (
               <p className="admin-muted">Loading messages…</p>
             ) : sermons.length === 0 ? (
@@ -298,12 +304,12 @@ export default function UploadPortal() {
                   <div key={sermon.id} className="admin-list-item">
                     <div>
                       <h4>{sermon.title}</h4>
-                      <span style={{ fontSize: '12px', color: '#d4af37' }}>{sermon.date}</span>
+                      <span style={{ fontSize: '12px', color: 'var(--gold)', fontWeight: '600' }}>{sermon.date}</span>
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                       {pendingDeleteSermonId === sermon.id ? (
                         <>
-                          <span style={{ fontSize: '12px', color: '#ffcdd2' }}>Delete this message?</span>
+                          <span style={{ fontSize: '12px', color: '#DC2626', fontWeight: '600' }}>Delete this message?</span>
                           <button
                             type="button"
                             className="admin-btn admin-btn--danger"
@@ -355,7 +361,7 @@ export default function UploadPortal() {
                       <p className="admin-muted" style={{ margin: '4px 0' }}>
                         {req.email}
                       </p>
-                      <p style={{ color: '#e0e0e0', fontSize: '14px', lineHeight: 1.5 }}>
+                      <p style={{ color: 'var(--text-main)', fontSize: '14px', lineHeight: 1.5 }}>
                         {req.message}
                       </p>
                       <p className="admin-muted" style={{ marginTop: '8px', fontSize: '12px' }}>

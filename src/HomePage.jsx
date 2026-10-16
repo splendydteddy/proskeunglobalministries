@@ -59,7 +59,7 @@ const ministriesData = [
     title: 'Technical', 
     tag: 'Technical & Sound',
     icon: '🎛️', 
-    desc: 'Managing the sound systems, acoustics, and stage tech to ensure an uninterrupted flow of service.',
+    desc: 'Managing sound systems, acoustics, and stage tech to ensure an uninterrupted flow of service.',
     time: 'Service: Sundays',
     bg: '/technical.jpg'
   },
@@ -114,7 +114,6 @@ const HomePage = () => {
   const [selectedCell, setSelectedCell] = useState(null);
   const [isNavOpen, setIsNavOpen] = useState(false);
 
-  // Gallery States
   const [galleryFilter, setGalleryFilter] = useState('all');
   const [activeImage, setActiveImage] = useState(null);
 
@@ -255,6 +254,9 @@ const HomePage = () => {
 
   return (
     <div className="church-site">
+      {/* High Visibility Static Fixed Center Logo Watermark */}
+      <div className="site-bg-watermark"></div>
+
       {isNavOpen && (
         <button
           type="button"
@@ -264,6 +266,7 @@ const HomePage = () => {
         />
       )}
 
+      {/* CLEAN WHITE NAVBAR */}
       <nav className="navbar">
         <div className="nav-brand">
           <img 
@@ -292,14 +295,15 @@ const HomePage = () => {
 
         <ul className={`nav-links ${isNavOpen ? 'nav-active' : ''}`}>
           <li><a href="#home" onClick={(e) => handleNavClick(e, 'home')}>Home</a></li>
-          <li><a href="#about" onClick={(e) => handleNavClick(e, 'about')}>About Us</a></li>
-          <li><a href="#schedule" onClick={(e) => handleNavClick(e, 'schedule')}>Schedule</a></li>
+          <li><Link to="/about" onClick={() => setIsNavOpen(false)}>About Us</Link></li>
+          <li><Link to="/services" onClick={() => setIsNavOpen(false)}>Services</Link></li>
           <li><a href="#cells" onClick={(e) => handleNavClick(e, 'cells')}>Cells</a></li>
           <li><a href="#media" onClick={(e) => handleNavClick(e, 'media')}>Media</a></li>
           <li><a href="#ministries" onClick={(e) => handleNavClick(e, 'ministries')}>Ministries</a></li>
           <li><a href="#gallery" onClick={(e) => handleNavClick(e, 'gallery')}>Gallery</a></li>
           <li><a href="#giving" onClick={(e) => handleNavClick(e, 'giving')}>Giving</a></li>
           <li><a href="#contact" onClick={(e) => handleNavClick(e, 'contact')}>Contact</a></li>
+          <li><Link to="/login" onClick={() => setIsNavOpen(false)} className="nav-pastor-portal">🔑 Pastor's Portal</Link></li>
         </ul>
 
         <div className="nav-cta">
@@ -307,7 +311,7 @@ const HomePage = () => {
         </div>
       </nav>
 
-      {/* HERO SECTION */}
+      {/* HERO SECTION WITH NATURAL FULL-COLOR PICTURE */}
       <section id="home" className="hero-section">
         <div className="hero-content">
           <span className="badge">Welcome to Proskeun</span>
@@ -320,11 +324,56 @@ const HomePage = () => {
             <button onClick={() => setShowSundayModal(true)} className="btn-primary">Join Us This Sunday</button>
             <a href="#cells" onClick={(e) => handleNavClick(e, 'cells')} className="btn-secondary">Find a Cell Near You</a>
           </div>
+
+          <div className="hero-glass-badge" onClick={() => setShowSundayModal(true)}>
+            <h4>Join Us This Sunday</h4>
+            <p>Service Times: Starts 7:30 AM</p>
+          </div>
         </div>
       </section>
 
-      {/* 🌟 VERSE OF THE DAY SECTION */}
+      {/* VERSE OF THE DAY SECTION */}
       <VerseOfTheDay />
+
+      {/* ABOUT OUR CHURCH BANNER SECTION */}
+      <section className="about-church-section">
+        <div className="about-church-container">
+          <div className="about-church-text">
+            <h2>About Our Church</h2>
+            <p className="about-description">
+              Proskeun Global Ministry is a vibrant, diverse congregation committed to making all men see God, experience His presence, and step into His finished works.
+            </p>
+
+            <div className="about-block">
+              <h3>Our Vision</h3>
+              <p>To make all men see Christ, experience the power of the Spirit, and walk in His Kingdom truth.</p>
+            </div>
+
+            <div className="about-block">
+              <h3>Core Values</h3>
+              <p>Preaching, Teaching, Praise, Prayer & Apostolic Ministration.</p>
+            </div>
+
+            <div className="about-values-grid">
+              <div className="value-item">
+                <div className="value-icon">🤍</div>
+                <h4>Love</h4>
+                <p>We love one another deeply as Christ loves the Church.</p>
+              </div>
+
+              <div className="value-item">
+                <div className="value-icon">👥</div>
+                <h4>Community</h4>
+                <p>We build lives and help men walk together in faith and purpose.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="about-church-image">
+            <img src="/pastor.png" alt="Proskeun Pastoral Leadership" onError={(e) => { e.target.onerror = null; e.target.src = '/proskeun.jpg'; }} />
+          </div>
+        </div>
+      </section>
 
       {/* RECAP SPOTLIGHT */}
       <section id="ablaze" className="recap-banner">
@@ -347,56 +396,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* LEADERSHIP SECTION */}
-      <section id="about" className="about-section">
-        <div className="section-header">
-          <h2>Our Vision & Leadership</h2>
-          <p>At Proskeun Global Ministry, our mission is clear, To change and transform lives through the teaching of the Word and prayer. We are a ministry that prioritizes spiritual growth and maturity for every believer. Our heart is to see lives truly transformed by the power of God and to raise a family of believers rooted in love, truth, and service.</p>
-        </div>
-
-        <div className="leadership-cards">
-          <div className="leader-card">
-            <div className="pastor-bg-container">
-              <img 
-                src="/pastor1.jpg" 
-                alt="Pastor Osasumwen Eghianruwa" 
-                className="pastor-img"
-                loading="lazy"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = IMAGE_FALLBACK;
-                }}
-              />
-            </div>
-            <div className="leader-card-content">
-              <span className="role">Head Pastor</span>
-              <h3>Pastor Osasumwen Eghianruwa</h3>
-              <p>Leading Proskeun Global Ministry with apostolic passion, raising believers operating in spiritual fire, joy, and structural maturity.</p>
-            </div>
-          </div>
-
-          <div className="leader-card">
-            <div className="pastor-bg-container">
-              <img 
-                src="/IMG_9572.WEBP" 
-                alt="Pastor Joy Eghianruwa" 
-                className="pastor-img"
-                loading="lazy"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = IMAGE_FALLBACK;
-                }}
-              />
-            </div>
-            <div className="leader-card-content">
-              <span className="role">Resident Pastor</span>
-              <h3>Pastor Joy Eghianruwa</h3>
-              <p>Serving the body with grace, shepherding the local congregation, and driving key spiritual and administrative arms of the ministry.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* WEEKLY SCHEDULE */}
       <section id="schedule" className="schedule-section">
         <div className="section-header">
@@ -409,8 +408,8 @@ const HomePage = () => {
             <div key={item.day} className={`schedule-item${item.highlight ? ' highlight' : ''}`}>
               <span className="day">{item.day}</span>
               <h4>{item.title}</h4>
-              <p>Type: {item.type}</p>
-              <p>Time: {item.time}</p>
+              <p><strong>Type:</strong> {item.type}</p>
+              <p><strong>Time:</strong> {item.time}</p>
             </div>
           ))}
         </div>
@@ -433,7 +432,7 @@ const HomePage = () => {
             >
               <span className="icon" aria-hidden="true">📍</span>
               <h3>{cell.name}</h3>
-              <p>Location: {cell.location}</p>
+              <p>{cell.location}</p>
               <span className="click-hint">View Directions →</span>
             </button>
           ))}
@@ -772,7 +771,9 @@ const HomePage = () => {
                 </button>
               </>
             )}
-            <img src={activeImage.img} alt={activeImage.title} className="lightbox-img" />
+            <div className="lightbox-image-wrapper">
+              <img src={activeImage.img} alt={activeImage.title} className="lightbox-img" />
+            </div>
             <div className="lightbox-info">
               <span className="recap-tag">{activeImage.category}</span>
               <h3>{activeImage.title}</h3>
@@ -790,7 +791,9 @@ const HomePage = () => {
         </button>
       </section>
 
+      {/* FOOTER WITH SOCIAL LINKS */}
       <footer className="site-footer">
+        <div className="site-footer-overlay"></div>
         <div className="footer-content">
           <div className="footer-info">
             <h3>PROSKEUN GLOBAL MINISTRY</h3>
@@ -801,26 +804,68 @@ const HomePage = () => {
           <div className="footer-links">
             <h4>Quick Links</h4>
             <ul>
-              <li><a href="#about" onClick={(e) => handleNavClick(e, 'about')}>About Us</a></li>
+              <li><Link to="/about">About Us</Link></li>
               <li><a href="#schedule" onClick={(e) => handleNavClick(e, 'schedule')}>Service Schedule</a></li>
               <li><a href="#cells" onClick={(e) => handleNavClick(e, 'cells')}>House Cells</a></li>
               <li><a href="#ministries" onClick={(e) => handleNavClick(e, 'ministries')}>Ministries</a></li>
               <li><a href="#gallery" onClick={(e) => handleNavClick(e, 'gallery')}>Gallery</a></li>
               <li><a href="#giving" onClick={(e) => handleNavClick(e, 'giving')}>Giving</a></li>
+              <li><Link to="/login">Pastor's Portal</Link></li>
             </ul>
           </div>
 
           <div className="footer-social">
-            <h4>Connect</h4>
-            <p>Follow <strong>@Proskeun global ministries</strong></p>
-            <ul className="social-icons-list">
+            <h4>Connect With Us</h4>
+            <ul className="social-links-grid">
               <li>
-                <a href="https://www.tiktok.com/@proskeunministry?_r=1&_t=ZS-98xLb1Id5xX" target="_blank" rel="noreferrer" className="social-icon-link" aria-label="TikTok">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 3 15.69 6.33 6.33 0 0 0 9.33 22a6.33 6.33 0 0 0 6.33-6.33V9.17a8.21 8.21 0 0 0 4.93 1.58v-3.48a4.85 4.85 0 0 1-1-.58z"/></svg>
+                <a 
+                  href="https://www.tiktok.com/@proskeunministry?_r=1&_t=ZS-98xLb1Id5xX" 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  className="social-link-item"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 3 15.69 6.33 6.33 0 0 0 9.33 22a6.33 6.33 0 0 0 6.33-6.33V9.17a8.21 8.21 0 0 0 4.93 1.58v-3.48a4.85 4.85 0 0 1-1-.58z"/></svg>
+                  <span>TikTok</span>
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="https://facebook.com" 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  className="social-link-item"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                  <span>Facebook</span>
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="https://instagram.com" 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  className="social-link-item"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                  <span>Instagram</span>
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="https://youtube.com" 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  className="social-link-item"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                  <span>YouTube</span>
                 </a>
               </li>
             </ul>
           </div>
+        </div>
+        <div className="footer-bottom">
+          <p>© 2026 Proskeun Global Ministry. All rights reserved.</p>
         </div>
       </footer>
     </div>

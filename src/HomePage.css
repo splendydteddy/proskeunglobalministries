@@ -1,139 +1,113 @@
 /* ==========================================================================
-    Proskeun Global Ministry — "Atmosphere of Joy and Fire"
-    Complete Stylesheet with Global Watermark & Digital Gallery
-    ========================================================================== */
+   Proskeun Global Ministry — Clean White, Deep Royal Blue (#01005D) & Gold
+   ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap');
 
 :root {
-  /* Site & Body Colors */
-  --site-bg:        #030838;
-  --navy-deep:      #01041b;
-  --royal:          #070d4d;
-  --royal-line:     #151e6d;
-
-  /* Brighter Nav Bar Color for proper contrast with the logo and links */
-  --navbar-bg:      rgba(15, 28, 90, 0.94); 
-
-  /* Gold & Accent Colors */
-  --gold:           #dcba54;
-  --gold-bright:    #e5ca6e;
-  --gold-soft:      rgba(220, 186, 84, 0.16);
-  --white:          #FFFFFF;
-  --white-dim:      #C7D0E6;
-  --slate:          #7C88AC;
-  --telegram-blue:  #0088cc;
-  --telegram-hover: #006699;
+  --site-bg:         #FFFFFF;
+  --section-alt:     #F8FAFC;
+  --text-main:       #0F172A;
+  --text-muted:      #475569;
+  --border-color:    #E2E8F0;
+  
+  --blue-accent:     #01005D; /* Deep Royal Navy */
+  --blue-hover:      #010040;
+  --gold:            #C59B27;
+  --gold-soft:       rgba(197, 155, 39, 0.12);
+  
+  --card-bg:         #FFFFFF;
+  --card-shadow:     0 4px 20px rgba(0, 0, 0, 0.05);
+  --card-shadow-hover: 0 12px 30px rgba(0, 0, 0, 0.1);
 
   --font-display: 'Fraunces', Georgia, serif;
   --font-body:    'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono:    'JetBrains Mono', 'SFMono-Regular', monospace;
-
-  --space-1: 0.5rem;
-  --space-2: 1rem;
-  --space-3: 1.5rem;
-  --space-4: 2.5rem;
-  --space-5: 4rem;
-  --space-6: 6.5rem;
-
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 22px;
+  --font-mono:    'JetBrains Mono', monospace;
 
   --max-width: 1180px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
 }
 
-/* Enforce Global Smooth Scrolling */
+/* Base Reset & Smooth Scrolling */
 html, body, .church-site {
   scroll-behavior: smooth !important;
-}
-
-/* Base Reset & Screen Protection */
-html, body {
   margin: 0;
   padding: 0;
   width: 100%;
   background-color: var(--site-bg);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Static Fixed Single Center Logo Watermark with Increased Opacity */
+.site-bg-watermark {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 65vw;
+  max-width: 650px;
+  height: 65vw;
+  max-height: 650px;
+  background-image: url('/logo.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0.18;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .church-site * { 
   box-sizing: border-box; 
 }
 
-/* Global Site Container with Fixed Background Watermark */
-.church-site {
-  position: relative;
-  background: var(--site-bg);
-  color: var(--white);
-  font-family: var(--font-body);
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  width: 100%;
-  overflow-x: hidden;
-}
-
-/* Global Watermark spanning the entire site height */
-.church-site::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  
-  /* Points directly to logo.png in public directory */
-  background-image: url('/logo.png'); 
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: min(500px, 70vw);
-  
-  /* Increased opacity for clear, striking visibility */
-  opacity: 0.25; 
-  
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Responsive Typography */
-.church-site h1, .church-site h2, .church-site h3, .church-site h4 {
+/* Typography */
+h1, h2, h3, h4 {
   font-family: var(--font-display);
   font-weight: 600;
-  line-height: 1.12;
+  line-height: 1.15;
   margin: 0;
-  color: var(--white);
-  letter-spacing: -0.01em;
-  position: relative;
-  z-index: 1;
+  color: var(--text-main);
 }
 
-.church-site p { margin: 0; color: var(--white-dim); position: relative; z-index: 1; }
-.church-site ul { list-style: none; margin: 0; padding: 0; }
-.church-site a { color: inherit; text-decoration: none; position: relative; z-index: 1; }
-
-/* Global Focus States */
-.church-site a:focus-visible,
-.church-site button:focus-visible {
-  outline: 2px solid var(--gold);
-  outline-offset: 3px;
-  border-radius: var(--radius-sm);
+/* Key Headings styled in Gold */
+.section-header h2, 
+.recap-card h3,
+.giving-card h3,
+.hero-content h2 {
+  color: var(--gold);
 }
 
-/* Responsive Section Spacing & Scroll Offsets */
+p { margin: 0; color: var(--text-muted); }
+ul { list-style: none; margin: 0; padding: 0; }
+a { color: inherit; text-decoration: none; }
+
+/* Sections */
 section { 
-  padding: clamp(3rem, 6vw, var(--space-6)) clamp(1rem, 4vw, var(--space-4)); 
+  padding: clamp(3.5rem, 6vw, 6rem) clamp(1rem, 4vw, 2.5rem); 
   width: 100%;
-  scroll-margin-top: 55px;
+  scroll-margin-top: 70px;
   position: relative;
   z-index: 1;
 }
 
 .section-header {
   max-width: 640px;
-  margin: 0 auto clamp(2rem, 5vw, var(--space-5));
+  margin: 0 auto clamp(2rem, 5vw, 3.5rem);
   text-align: center;
 }
 
-.section-header h2 { font-size: clamp(1.7rem, 4vw, 2.5rem); margin-bottom: var(--space-2); }
-.section-header p { font-size: clamp(0.95rem, 1.5vw, 1.05rem); }
+.section-header h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); margin-bottom: 0.6rem; }
+.section-header p { font-size: clamp(0.95rem, 1.5vw, 1.05rem); color: var(--text-muted); }
 
-/* Ultra-Slim Fixed Navbar Container */
+/* CLEAN WHITE FIXED NAVBAR */
 .navbar {
   position: fixed;
   top: 0;
@@ -143,107 +117,63 @@ section {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-2);
-  
-  height: 50px;
+  height: 70px;
   padding: 0 clamp(1rem, 3vw, 2.5rem);
-  
-  background-color: var(--navbar-bg);
-  backdrop-filter: blur(16px) saturate(150%);
-  -webkit-backdrop-filter: blur(16px) saturate(150%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
-  width: 100%;
-  transition: background 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Offset top margin to compensate for 50px navbar height */
-.hero-section {
-  margin-top: 50px;
+  background-color: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
 }
 
 .nav-brand { 
   display: flex; 
   align-items: center; 
-  gap: clamp(0.5rem, 1.5vw, var(--space-2)); 
-  max-width: 100%;
+  gap: 12px; 
 }
 
-/* Micro-Scaled Logo with Glow Drop-Shadow */
 .brand-logo {
-  height: clamp(24px, 3.5vw, 32px);
+  height: 38px;
   width: auto;
   object-fit: contain;
-  filter: drop-shadow(0 0 8px rgba(220, 186, 84, 0.5));
   transition: transform 0.2s ease;
-  flex-shrink: 0;
 }
+.brand-logo:hover { transform: scale(1.05); }
 
-.brand-logo:hover {
-  transform: scale(1.05);
-}
+.logo-text { display: flex; flex-direction: column; line-height: 1.1; }
+.brand-name { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; color: var(--text-main); }
+.brand-sub { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.16em; color: var(--blue-accent); text-transform: uppercase; }
 
-.logo-text { 
-  display: flex; 
-  flex-direction: column; 
-  line-height: 1.1; 
-}
-
-.brand-name { 
-  font-family: var(--font-display); 
-  font-weight: 700; 
-  font-size: clamp(0.9rem, 1.8vw, 1.15rem); 
-  letter-spacing: 0.04em; 
-  white-space: nowrap;
-}
-
-.brand-sub { 
-  font-family: var(--font-mono); 
-  font-size: 0.58rem; 
-  letter-spacing: 0.16em; 
-  color: var(--gold); 
-  text-transform: uppercase; 
-  white-space: nowrap;
-}
-
-/* Clean Upper-case Nav Links */
 .nav-links { 
   display: flex; 
   align-items: center;
-  gap: clamp(0.8rem, 2vw, 1.8rem); 
+  gap: 0.6rem; 
 }
 
 .nav-links a { 
   font-family: var(--font-mono);
-  font-size: 0.72rem; 
-  letter-spacing: 0.14em;
+  font-size: 0.75rem; 
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--white); 
+  color: var(--text-main); 
+  font-weight: 500;
   position: relative; 
-  padding: 4px 0; 
-  transition: color 0.2s ease; 
-}
-
-.nav-links a::after {
-  content: ''; 
-  position: absolute; 
-  left: 0; 
-  bottom: 0; 
-  width: 0; 
-  height: 1px;
-  background: var(--gold); 
-  transition: width 0.25s ease;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease; 
 }
 
 .nav-links a:hover { 
-  color: var(--gold-bright); 
+  background-color: var(--blue-accent);
+  color: #FFFFFF !important; 
 }
 
-.nav-links a:hover::after { 
-  width: 100%; 
+.nav-pastor-portal {
+  color: var(--blue-accent) !important;
+  font-weight: 600 !important;
 }
 
-/* Mobile Menu Toggle Button */
+/* Mobile Menu Toggle */
 .mobile-menu-toggle {
   display: none;
   flex-direction: column;
@@ -256,28 +186,15 @@ section {
   padding: 0;
   z-index: 1002;
 }
-
 .mobile-menu-toggle .bar {
   height: 2px;
   width: 100%;
-  background-color: var(--gold);
+  background-color: var(--text-main);
   border-radius: 4px;
   transition: all 0.3s ease-in-out;
 }
 
-.mobile-menu-toggle.active .bar:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
-}
-
-.mobile-menu-toggle.active .bar:nth-child(2) {
-  opacity: 0;
-}
-
-.mobile-menu-toggle.active .bar:nth-child(3) {
-  transform: translateY(-7px) rotate(-45deg);
-}
-
-/* Buttons & Interactive Elements */
+/* Buttons */
 .btn-primary, .btn-secondary, .btn-light, .btn-telegram {
   display: inline-flex;
   align-items: center;
@@ -285,1079 +202,701 @@ section {
   gap: 0.5em;
   font-family: var(--font-body);
   font-weight: 600;
-  font-size: 0.85rem;
-  min-height: 34px;
-  padding: 0.45em 1.2em;
+  font-size: 0.88rem;
+  padding: 0.65em 1.5em;
   border-radius: 999px;
   border: 1px solid transparent;
   cursor: pointer;
-  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
   white-space: nowrap;
-  position: relative;
-  z-index: 1;
 }
 
 .btn-primary {
-  background: var(--gold);
-  color: var(--navy-deep);
-  box-shadow: 0 6px 18px -6px rgba(220, 186, 84, 0.45);
+  background: var(--blue-accent);
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(1, 0, 93, 0.3);
 }
-.btn-primary:hover,
-.btn-primary:focus-visible {
+.btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 24px -6px rgba(220, 186, 84, 0.65);
-  background: var(--gold-bright);
+  background: var(--blue-hover);
+  box-shadow: 0 6px 20px rgba(1, 0, 93, 0.4);
 }
 
-.btn-secondary { background: transparent; color: var(--white); border-color: var(--royal-line); }
-.btn-secondary:hover,
-.btn-secondary:focus-visible { border-color: var(--gold); color: var(--gold); }
-
-/* Ablaze Highlights Button */
-.recap-card .btn-light,
-.btn-light { 
-  background: var(--white); 
-  color: var(--site-bg); 
-  display: inline-flex;
-  opacity: 1;
-  visibility: visible;
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
 }
-.recap-card .btn-light:hover,
-.btn-light:hover,
-.btn-light:focus-visible { 
-  transform: translateY(-2px); 
-  background: var(--gold); 
-  color: var(--navy-deep); 
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
 }
 
-/* Telegram Button */
+.btn-light {
+  background: #FFFFFF;
+  color: var(--text-main);
+  font-weight: 600;
+}
+.btn-light:hover {
+  transform: translateY(-2px);
+  background: #F1F5F9;
+}
+
 .btn-telegram {
-  background: var(--telegram-blue);
-  color: var(--white);
-  border-color: var(--telegram-blue);
+  background: #0088cc;
+  color: #FFFFFF;
 }
-.btn-telegram:hover,
-.btn-telegram:focus-visible {
+.btn-telegram:hover {
   transform: translateY(-2px);
-  background: var(--telegram-hover);
-  border-color: var(--telegram-hover);
+  background: #006699;
 }
 
-/* Hero Section Base */
+/* HERO BANNER SECTION */
 .hero-section {
   position: relative;
-  min-height: clamp(65vh, 80vh, 84vh);
+  min-height: 85vh;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding-top: clamp(2rem, 5vw, var(--space-6));
-  padding-bottom: clamp(2rem, 5vw, var(--space-6));
-  overflow: hidden;
-  z-index: 1;
+  padding-top: 90px;
   background:
-    linear-gradient(180deg, rgba(3, 8, 56, 0.88) 0%, rgba(1, 4, 27, 0.94) 100%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.55) 100%),
     url('/proskeun.jpg') center center / cover no-repeat;
 }
 
-/* Ambient Radial Glow Effect */
-.hero-section::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(600px 420px at 50% 18%, rgba(220, 186, 84, 0.12), transparent 70%),
-    radial-gradient(900px 500px at 82% 90%, rgba(21, 30, 109, 0.45), transparent 65%);
-  animation: glow-breathe 9s ease-in-out infinite;
-  pointer-events: none;
-  z-index: 0;
-}
-
-@keyframes glow-breathe {
-  0%, 100% { opacity: 0.85; }
-  50% { opacity: 1; }
-}
-
 .hero-content {
-  position: relative;
-  z-index: 1;
-  max-width: 720px;
-  width: 100%;
+  max-width: 780px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-2);
+  gap: 1.2rem;
+  z-index: 2;
+  color: #FFFFFF;
 }
 
 .badge {
   font-family: var(--font-mono);
-  font-size: clamp(0.62rem, 1.2vw, 0.7rem);
-  letter-spacing: 0.14em;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--gold);
-  border: 1px solid var(--royal-line);
-  background: var(--royal);
-  padding: 0.5em 1.1em;
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 0.5em 1.2em;
   border-radius: 999px;
-  margin-bottom: var(--space-1);
+  backdrop-filter: blur(8px);
 }
 
-.hero-content h1 { font-size: clamp(2rem, 5.5vw, 4.2rem); }
-.hero-content h2 { font-style: italic; font-weight: 500; font-size: clamp(1rem, 2.2vw, 1.6rem); color: var(--gold); margin-top: 0.3em; }
-.hero-content p { max-width: 560px; font-size: clamp(0.95rem, 1.5vw, 1.05rem); margin-top: var(--space-2); }
+.hero-content h1 { font-size: clamp(2.2rem, 5.5vw, 4.2rem); color: #FFFFFF; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); }
+.hero-content h2 { font-style: italic; font-weight: 500; font-size: clamp(1.1rem, 2.2vw, 1.6rem); color: var(--gold); text-shadow: 0 1px 6px rgba(0, 0, 0, 0.3); }
+.hero-content p { max-width: 580px; font-size: 1.05rem; color: #F1F5F9; text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3); }
+.hero-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-top: 1rem; }
 
-.hero-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-2); margin-top: var(--space-3); width: 100%; }
+.hero-glass-badge {
+  margin-top: 1.5rem;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  padding: 14px 28px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.hero-glass-badge:hover { transform: translateY(-3px); }
+.hero-glass-badge h4 { margin: 0 0 4px; font-size: 1.05rem; color: #FFFFFF; }
+.hero-glass-badge p { margin: 0; font-size: 0.85rem; color: #F1F5F9; }
 
-/* Recap Spotlight Section */
-.recap-banner { padding-top: 0; padding-bottom: clamp(2.5rem, 5vw, var(--space-5)); }
+/* ABOUT OUR CHURCH BANNER SECTION */
+.about-church-section {
+  background: #010040;
+  color: #FFFFFF;
+  padding: 4rem 5% 0rem;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
 
-.recap-card {
+.about-church-container {
   max-width: var(--max-width);
   margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  align-items: flex-end;
+  gap: 3rem;
+}
+
+.about-church-text {
+  padding-bottom: 4rem;
+}
+
+.about-church-text h2 {
+  font-size: clamp(2rem, 3.5vw, 2.6rem);
+  color: #FFFFFF;
+  margin-bottom: 1rem;
+}
+
+.about-description {
+  color: #E2E8F0;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.about-block {
+  margin-bottom: 1.8rem;
+}
+
+.about-block h3 {
+  color: var(--gold);
+  font-size: 1.3rem;
+  margin-bottom: 0.4rem;
+}
+
+.about-block p {
+  color: #CBD5E1;
+  font-size: 0.98rem;
+}
+
+.about-values-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.value-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.value-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.value-item h4 {
+  color: #FFFFFF;
+  font-size: 1.05rem;
+}
+
+.value-item p {
+  color: #94A3B8;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.about-church-image {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.about-church-image img {
+  max-width: 100%;
+  height: auto;
+  max-height: 520px;
+  object-fit: contain;
+}
+
+/* RECAP BANNER */
+.recap-banner { max-width: var(--max-width); margin: 0 auto; padding-top: 3rem; }
+.recap-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-3);
+  gap: 2rem;
   flex-wrap: wrap;
-  background: linear-gradient(120deg, var(--royal), var(--navy-deep));
-  border: 1px solid var(--royal-line);
+  background: linear-gradient(135deg, #010040, #01005D);
+  color: #FFFFFF;
   border-radius: var(--radius-lg);
-  padding: clamp(1.2rem, 3vw, var(--space-4));
-  position: relative;
-  z-index: 1;
+  padding: 2.5rem;
+  box-shadow: 0 10px 30px rgba(1, 0, 93, 0.2);
 }
+.recap-tag { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
+.recap-card h3 { font-size: 1.4rem; color: var(--gold); margin: 0.4rem 0; }
+.recap-card p { color: #E2E8F0; }
 
-.recap-tag { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
-.recap-details h3 { font-size: clamp(1.15rem, 2.5vw, 1.4rem); margin: 0.4em 0 0.4em; }
-.recap-details p { max-width: 480px; }
-
-/* About & Leadership */
-.about-section { max-width: var(--max-width); margin: 0 auto; }
-
-.leadership-cards { 
-  display: grid; 
-  grid-template-columns: repeat(2, minmax(0, 1fr)); 
-  gap: clamp(1rem, 2.5vw, var(--space-3)); 
-}
-
-.leader-card {
-  background: var(--royal);
-  border: 1px solid var(--royal-line);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition: border-color 0.25s ease, transform 0.25s ease;
-  position: relative;
-  z-index: 1;
-}
-.leader-card:hover { border-color: var(--gold); transform: translateY(-4px); }
-
-.pastor-bg-container {
-  width: 100%;
-  height: clamp(260px, 30vw, 380px);
-  overflow: hidden;
-  background: var(--navy-deep);
-  position: relative;
-}
-
-.pastor-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  display: block;
-  transition: transform 0.4s ease;
-}
-
-.leader-card:hover .pastor-img {
-  transform: scale(1.05);
-}
-
-.leader-card-content {
-  padding: clamp(1rem, 2.5vw, var(--space-3));
-  display: flex;
-  flex-direction: column;
-}
-
-.role { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
-.leader-card h3 { font-size: clamp(1.1rem, 2vw, 1.25rem); margin: 0.4em 0 0.4em; }
-
-/* Schedule Section */
-.schedule-section { max-width: var(--max-width); margin: 0 auto; }
-
+/* SCHEDULE SECTION */
+.schedule-section { max-width: var(--max-width); margin: 0 auto; background: var(--site-bg); }
 .schedule-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1px;
-  background: var(--royal-line);
-  border: 1px solid var(--royal-line);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
 }
-
 .schedule-item {
-  background: var(--site-bg);
-  padding: clamp(1rem, 2vw, var(--space-3));
-  display: flex;
-  flex-direction: column;
-  gap: 0.35em;
-  transition: background 0.25s ease;
-  position: relative;
-  z-index: 1;
-}
-.schedule-item:hover { background: var(--royal); }
-.schedule-item .day { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--slate); }
-.schedule-item h4 { font-size: 1.1rem; margin: 0.15em 0 0.3em; }
-.schedule-item p { font-size: 0.86rem; }
-
-.schedule-item.highlight { background: linear-gradient(160deg, var(--gold-soft), var(--site-bg) 70%); }
-.schedule-item.highlight .day { color: var(--gold); }
-.schedule-item.highlight h4 { color: var(--gold); }
-
-/* House Cells Section */
-.cells-section { max-width: var(--max-width); margin: 0 auto; }
-
-.cells-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: clamp(1rem, 2vw, var(--space-3)); }
-
-.cell-card {
-  background: var(--royal);
-  border: 1px solid var(--royal-line);
+  background: var(--section-alt);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  padding: clamp(1rem, 2vw, var(--space-3));
-  transition: border-color 0.25s ease, transform 0.25s ease;
-  position: relative;
-  z-index: 1;
-}
-.cell-card:hover { border-color: var(--gold); transform: translateY(-3px); }
-.cell-card .icon { font-size: 1.15rem; display: inline-block; margin-bottom: var(--space-1); }
-.cell-card h3 { font-size: 1.05rem; margin-bottom: 0.3em; }
-.cell-card p { font-size: 0.88rem; }
-
-.cell-card.clickable {
-  cursor: pointer;
-  position: relative;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  text-align: left;
-  font: inherit;
-  color: inherit;
-  appearance: none;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
 }
-
-.click-hint {
-  display: inline-block;
-  margin-top: var(--space-2);
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  color: var(--gold);
-  font-weight: 600;
-  transition: transform 0.2s ease;
-}
-
-.cell-card.clickable:hover .click-hint {
-  transform: translateX(4px);
-  color: var(--gold-bright);
-}
-
-/* ==========================================================================
-   Departments Section Styles (Background Image Support for All Cards)
-   ========================================================================== */
-
-.departments-section {
-  max-width: var(--max-width);
-  margin: 0 auto;
-}
-
-.departments-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(1rem, 2.5vw, var(--space-3));
-}
-
-.dept-card {
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  border: 1px solid var(--royal-line);
-  border-radius: var(--radius-lg);
-  padding: clamp(1.2rem, 3vw, var(--space-4));
-  display: flex;
-  flex-direction: column;
-  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
-}
-
-/* Dark gradient overlay for text legibility over any background photo */
-.dept-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(1, 4, 27, 0.93) 20%, rgba(7, 13, 77, 0.88) 100%);
-  z-index: 0;
-}
-
-/* Ensure inner content sits securely above the overlay */
-.dept-card > * {
-  position: relative;
-  z-index: 1;
-}
-
-.dept-card:hover {
-  border-color: var(--gold);
+.schedule-item:hover {
+  border-color: var(--blue-accent);
   transform: translateY(-4px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--card-shadow-hover);
 }
+.schedule-item .day { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blue-accent); font-weight: 600; }
+.schedule-item h4 { font-size: 1.2rem; color: var(--text-main); margin: 0.2rem 0; }
+.schedule-item.highlight { background: rgba(1, 0, 93, 0.04); border-color: var(--blue-accent); }
 
-.dept-card .icon {
-  font-size: 1.8rem;
-  margin-bottom: var(--space-1);
-  display: inline-block;
-}
-
-.dept-tag {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 0.3em;
-}
-
-.dept-card h3 {
-  font-size: clamp(1.15rem, 2vw, 1.35rem);
-  margin: 0.2em 0 0.5em;
-  color: var(--white);
-}
-
-.dept-card p {
-  font-size: 0.92rem;
-  color: var(--white-dim);
-  line-height: 1.6;
-  margin-bottom: var(--space-2);
-  flex-grow: 1;
-}
-
-.dept-footer {
-  border-top: 1px solid var(--royal-line);
-  padding-top: 0.8rem;
-  margin-top: auto;
-}
-
-.dept-time {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--slate);
-  letter-spacing: 0.04em;
-}
-
-/* Digital Gallery / Ministry Moments Section Styles */
-.gallery-section {
-  max-width: var(--max-width);
-  margin: 0 auto;
-}
-
-.gallery-filters {
+/* CELLS SECTION */
+.cells-section { background: var(--section-alt); }
+.cells-grid { max-width: var(--max-width); margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+.cell-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 2rem;
+  text-align: left;
+  color: var(--text-main);
+  cursor: pointer;
+  box-shadow: var(--card-shadow);
+  transition: all 0.3s ease;
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  margin-bottom: var(--space-3);
+  flex-direction: column;
 }
+.cell-card:hover {
+  border-color: var(--blue-accent);
+  transform: translateY(-4px);
+  box-shadow: var(--card-shadow-hover);
+}
+.cell-card .icon { font-size: 1.6rem; margin-bottom: 0.8rem; }
+.cell-card h3 { font-size: 1.15rem; margin-bottom: 0.5rem; }
+.cell-card p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem; flex-grow: 1; }
+.click-hint { font-family: var(--font-mono); font-size: 0.75rem; color: var(--blue-accent); font-weight: 600; }
 
-.filter-btn {
-  background: var(--royal);
-  color: var(--white-dim);
-  border: 1px solid var(--royal-line);
+/* MEDIA & SERMONS SECTION */
+.media-section { max-width: var(--max-width); margin: 0 auto; display: flex; flex-direction: column; gap: 2.5rem; }
+.sermons-archive-container, .media-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  box-shadow: var(--card-shadow);
+}
+.sermons-empty-card { text-align: center; padding: 2rem 0; }
+.sermon-item-card {
+  background: var(--section-alt);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.sermon-item-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.sermon-date { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; }
+.sermon-download-btn, .sermon-archive-link a {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.1em;
+  font-size: 0.75rem;
+  color: var(--blue-accent);
+  background: rgba(1, 0, 93, 0.05);
+  border: 1px solid var(--border-color);
+  padding: 0.5em 1em;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+.sermon-download-btn:hover { background: var(--blue-accent); color: #FFFFFF; }
+.sermon-audio-player { width: 100%; height: 40px; }
+.sermon-archive-link { margin-top: 1rem; text-align: center; }
+
+/* GALLERY SECTION */
+.gallery-section { max-width: var(--max-width); margin: 0 auto; }
+.gallery-filters { display: flex; justify-content: center; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 2.5rem; }
+.filter-btn {
+  background: var(--section-alt);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 0.5em 1.2em;
+  padding: 0.6em 1.4em;
   border-radius: 999px;
   cursor: pointer;
   transition: all 0.25s ease;
 }
-
-.filter-btn:hover,
-.filter-btn.active {
-  background: var(--gold);
-  color: var(--navy-deep);
-  border-color: var(--gold);
+.filter-btn:hover, .filter-btn.active {
+  background: var(--blue-accent);
+  color: #FFFFFF;
+  border-color: var(--blue-accent);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(220, 186, 84, 0.3);
 }
-
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(1rem, 2vw, var(--space-3));
-}
-
+.gallery-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
 .gallery-item {
   position: relative;
   border-radius: var(--radius-md);
   overflow: hidden;
-  background: var(--royal);
-  border: 1px solid var(--royal-line);
+  background: var(--section-alt);
+  border: 1px solid var(--border-color);
   aspect-ratio: 4 / 3;
   cursor: pointer;
-  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.3s ease;
 }
-
-.gallery-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.4s ease;
-}
-
+.gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
 .gallery-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(1, 4, 27, 0.2) 20%, rgba(1, 4, 27, 0.9) 90%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 20%, rgba(0, 0, 0, 0.85) 90%);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 1.2rem;
+  padding: 1.5rem;
   opacity: 0;
+  color: #FFFFFF;
   transition: opacity 0.3s ease;
 }
+.gallery-cat { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
+.gallery-overlay h4 { color: #FFFFFF; }
+.gallery-item:hover { transform: translateY(-4px); box-shadow: var(--card-shadow-hover); }
+.gallery-item:hover img { transform: scale(1.08); }
+.gallery-item:hover .gallery-overlay { opacity: 1; }
 
-.gallery-cat {
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 0.2rem;
+/* GIVING SECTION */
+.giving-section { background: var(--section-alt); }
+.giving-grid { display: grid; max-width: 550px; margin: 0 auto; }
+.giving-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 3rem 2rem;
+  text-align: center;
+  box-shadow: var(--card-shadow);
+  transition: border-color 0.3s ease;
 }
-
-.gallery-overlay h4 {
-  font-size: 1.05rem;
-  color: var(--white);
-  margin: 0;
+.giving-card:hover { border-color: var(--blue-accent); }
+.giving-card .icon { font-size: 2.2rem; display: block; margin-bottom: 1rem; }
+.giving-card h3 { font-size: 1.4rem; margin-bottom: 1rem; }
+.giving-card p { font-size: 0.95rem; margin-bottom: 0.5rem; }
+.btn-copy-account {
+  margin-top: 1.5rem;
+  background: rgba(1, 0, 93, 0.05);
+  border: 1px solid var(--blue-accent);
+  color: var(--blue-accent);
+  padding: 0.6em 1.4em;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
 }
+.btn-copy-account:hover { background: var(--blue-accent); color: #FFFFFF; }
 
-.gallery-item:hover {
-  transform: translateY(-4px);
-  border-color: var(--gold);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+/* CONTACT SECTION */
+.contact-section { max-width: var(--max-width); margin: 0 auto; }
+.contact-form {
+  max-width: 650px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  padding: 3rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--card-shadow);
 }
-
-.gallery-item:hover img {
-  transform: scale(1.08);
+.form-group { display: flex; flex-direction: column; gap: 0.5rem; text-align: left; }
+.form-group label { font-size: 0.9rem; font-weight: 600; color: var(--text-main); }
+.contact-form input, .contact-form textarea {
+  width: 100%;
+  background: var(--section-alt);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  color: var(--text-main);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease;
 }
+.contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--blue-accent); }
 
-.gallery-item:hover .gallery-overlay {
-  opacity: 1;
+/* DEPARTMENTS / MINISTRIES SECTION */
+.departments-section { background: var(--section-alt); }
+.departments-grid { max-width: var(--max-width); margin: 0 auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
+.dept-card {
+  background-size: cover;
+  background-position: center;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.dept-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.92) 20%, rgba(1, 0, 93, 0.88) 100%);
+  z-index: 0;
+}
+.dept-card > * { position: relative; z-index: 1; color: #FFFFFF; }
+.dept-card h3 { color: #FFFFFF; font-size: 1.4rem; margin: 0.4rem 0 0.8rem; }
+.dept-card p { color: #E2E8F0; }
+.dept-card .icon { font-size: 2rem; margin-bottom: 1rem; }
+.dept-tag { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
+.dept-footer { border-top: 1px solid rgba(255, 255, 255, 0.2); padding-top: 1rem; }
+.dept-time { font-family: var(--font-mono); font-size: 0.75rem; color: #CBD5E1; }
+
+/* FAQ SECTION */
+.faq-section { max-width: var(--max-width); margin: 0 auto; }
+.faq-accordion { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; }
+.faq-item { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden; transition: border-color 0.2s ease; }
+.faq-item--open { border-color: var(--blue-accent); }
+.faq-question {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 1.8rem;
+  background: transparent;
+  border: none;
+  color: var(--text-main);
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  text-align: left;
+  cursor: pointer;
+}
+.faq-icon { color: var(--blue-accent); font-size: 1.4rem; }
+.faq-answer { padding: 0 1.8rem 1.5rem; }
+
+/* MODALS */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+.modal-content {
+  background: var(--card-bg);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  max-width: 650px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
 }
 
 .gallery-modal {
-  max-width: 680px;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
   padding: 1.5rem;
-  text-align: left;
+  gap: 1rem;
+}
+
+.lightbox-image-wrapper {
+  width: 100%;
+  max-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000000;
+  border-radius: var(--radius-md);
+  overflow: hidden;
 }
 
 .lightbox-img {
-  width: 100%;
+  max-width: 100%;
   max-height: 60vh;
+  width: auto;
+  height: auto;
   object-fit: contain;
-  background: var(--navy-deep);
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--royal-line);
-  margin-bottom: 1rem;
 }
 
-.lightbox-info h3 {
-  font-size: 1.3rem;
-  margin: 0.3rem 0 0.5rem;
-}
-
-.lightbox-info p {
-  font-size: 0.95rem;
-  color: var(--white-dim);
-}
-
-/* Media Section */
-.media-section { 
-  max-width: var(--max-width); 
-  margin: 0 auto; 
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-
-.media-card {
-  background: linear-gradient(135deg, var(--royal), var(--navy-deep));
-  border: 1px solid var(--royal-line);
-  border-radius: var(--radius-lg);
-  padding: clamp(1.2rem, 3vw, var(--space-4));
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-  flex-wrap: wrap;
-  position: relative;
-  z-index: 1;
-}
-
-.media-info h3 { font-size: clamp(1.15rem, 2.5vw, 1.35rem); margin: 0.3em 0 0.2em; }
-
-/* Sermons Archive Container & Cards */
-.sermons-archive-container {
-  background: linear-gradient(135deg, var(--royal), var(--navy-deep));
-  border: 1px solid var(--royal-line);
-  border-radius: var(--radius-lg);
-  padding: clamp(1.2rem, 3vw, var(--space-4));
-  position: relative;
-  z-index: 1;
-}
-
-.sermons-archive-container > h3 {
-  font-size: clamp(1.15rem, 2.5vw, 1.35rem);
-  margin-bottom: var(--space-2);
-  color: var(--gold);
-}
-
-.sermons-empty-card {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  text-align: left;
-  padding: 1rem 0;
-}
-
-.sermons-empty-card h3 {
-  font-size: clamp(1.1rem, 2.2vw, 1.3rem);
-  margin: 0.2em 0;
-}
-
-.empty-actions {
-  margin-top: var(--space-1);
-}
-
-.sermons-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.sermon-item-card {
-  background: var(--site-bg);
-  border: 1px solid var(--royal-line);
-  border-radius: var(--radius-md);
-  padding: clamp(1rem, 2vw, var(--space-3));
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  transition: border-color 0.25s ease;
-}
-
-.sermon-item-card:hover {
-  border-color: var(--gold);
-}
-
-.sermon-item-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--space-2);
-  flex-wrap: wrap;
-}
-
-.sermon-item-header h4 {
-  font-size: 1.1rem;
-  color: var(--white);
-  margin-bottom: 0.2em;
-}
-
-.sermon-date {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.08em;
-  color: var(--slate);
-  text-transform: uppercase;
-}
-
-.sermon-download-btn {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  background: var(--royal);
-  color: var(--gold);
-  border: 1px solid var(--royal-line);
-  padding: 0.4em 0.9em;
-  border-radius: var(--radius-sm);
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.sermon-download-btn:hover {
-  background: var(--gold);
-  color: var(--navy-deep);
-  border-color: var(--gold);
-}
-
-.sermon-audio-player {
-  width: 100%;
-  height: 38px;
-  border-radius: var(--radius-sm);
-  outline: none;
-}
-
-/* Spinner styling if used */
-.spinner {
-  width: 28px;
-  height: 28px;
-  border: 3px solid var(--royal-line);
-  border-top-color: var(--gold);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* Giving Section */
-.giving-section { max-width: var(--max-width); margin: 0 auto; }
-
-.giving-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: clamp(1rem, 2vw, var(--space-3)); }
-
-.giving-card {
-  background: var(--royal);
-  border: 1px solid var(--royal-line);
-  border-radius: var(--radius-lg);
-  padding: clamp(1.2rem, 3vw, var(--space-4));
-  text-align: center;
-  transition: border-color 0.25s ease;
-  position: relative;
-  z-index: 1;
-}
-.giving-card:hover { border-color: var(--gold); }
-.giving-card .icon { font-size: 1.8rem; margin-bottom: var(--space-2); display: block; }
-.giving-card h3 { font-size: 1.2rem; margin-bottom: 0.6em; color: var(--gold); }
-.giving-card p { font-size: 0.95rem; margin-bottom: 0.3em; }
-
-/* Contact Form Section */
-.contact-section { max-width: var(--max-width); margin: 0 auto; }
-
-.contact-form {
-  max-width: 600px;
-  width: 100%;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  background: var(--royal);
-  border: 1px solid var(--royal-line);
-  padding: clamp(1.2rem, 3vw, var(--space-4));
-  border-radius: var(--radius-lg);
-  position: relative;
-  z-index: 1;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  text-align: left;
-}
-
-.form-group label {
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: var(--white-dim);
-}
-
-.contact-form input,
-.contact-form textarea {
-  width: 100%;
-  background: var(--navy-deep);
-  border: 1px solid var(--royal-line);
-  border-radius: var(--radius-sm);
-  padding: 0.85em 1.1em;
-  color: var(--white);
-  font-family: var(--font-body);
-  font-size: 0.92rem;
-  transition: border-color 0.2s ease;
-}
-
-.contact-form input:focus,
-.contact-form textarea:focus {
-  outline: none;
-  border-color: var(--gold);
-}
-
-.form-feedback {
-  max-width: 600px;
-  margin: 0 auto var(--space-2);
-  padding: 12px 16px;
-  border-radius: var(--radius-sm);
-  font-size: 0.92rem;
-  text-align: center;
-}
-
-.form-feedback--success {
-  background: rgba(46, 125, 50, 0.2);
-  border: 1px solid #66bb6a;
-  color: #c8e6c9;
-}
-
-.form-feedback--error {
-  background: rgba(198, 40, 40, 0.15);
-  border: 1px solid #ef5350;
-  color: #ffcdd2;
-}
-
-.sermon-archive-link {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.sermon-archive-link a {
-  color: var(--gold);
-  font-weight: 700;
-  text-decoration: underline;
-}
-
-.btn-copy-account {
-  margin-top: var(--space-2);
-  background: var(--gold-soft);
-  border: 1px solid var(--gold);
-  color: var(--gold-bright);
-  padding: 0.55em 1.2em;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 0.88rem;
-}
-
-.giving-note {
-  margin-top: var(--space-2);
-  font-size: 0.85rem;
-  font-style: italic;
-}
-
-.pre-footer-cta {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  text-align: center;
-  padding: clamp(2.5rem, 5vw, var(--space-5)) clamp(1rem, 4vw, var(--space-4));
-}
-
-.pre-footer-cta h2 {
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  margin-bottom: var(--space-2);
-}
-
-.pre-footer-cta p {
-  margin-bottom: var(--space-3);
-}
-
-.footer-address {
-  margin-top: var(--space-2);
-  font-size: 0.88rem;
-}
-
-.nav-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  background: rgba(0, 0, 0, 0.55);
-  border: none;
-  cursor: pointer;
+.lightbox-info {
+  margin-top: 0.5rem;
 }
 
 .gallery-nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(3, 8, 56, 0.75);
-  border: 1px solid var(--gold);
-  color: var(--gold);
+  background: rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+  border: none;
+  font-size: 2rem;
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  font-size: 1.5rem;
   cursor: pointer;
-  z-index: 2;
-}
-
-.gallery-nav--prev { left: 0.75rem; }
-.gallery-nav--next { right: 0.75rem; }
-
-.gallery-modal {
-  position: relative;
-}
-
-/* FAQ Section */
-.faq-section { max-width: var(--max-width); margin: 0 auto; }
-
-.faq-accordion {
-  max-width: 720px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.faq-item {
-  background: var(--royal);
-  border: 1px solid var(--royal-line);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-}
-
-.faq-item--open {
-  border-color: var(--gold);
-}
-
-.faq-question {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--space-2);
-  padding: clamp(1rem, 2vw, var(--space-3));
-  background: transparent;
-  border: none;
-  color: var(--white);
-  font-family: var(--font-display);
-  font-size: 1.05rem;
-  font-weight: 600;
-  text-align: left;
-  cursor: pointer;
-}
-
-.faq-icon {
-  color: var(--gold);
-  font-size: 1.25rem;
-  flex-shrink: 0;
-}
-
-.faq-answer {
-  padding: 0 clamp(1rem, 2vw, var(--space-3)) clamp(1rem, 2vw, var(--space-3));
-}
-
-.faq-answer p {
-  font-size: 0.9rem;
-  line-height: 1.55;
-}
-
-/* Modals */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 2000;
-  background: rgba(1, 4, 27, 0.85);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(0.75rem, 2vw, var(--space-2));
-  animation: fadeIn 0.25s ease-out;
+  z-index: 10;
+  transition: background 0.2s ease;
 }
-
-.modal-content {
-  position: relative;
-  background: var(--royal);
-  border: 1px solid var(--gold);
-  border-radius: var(--radius-lg);
-  padding: clamp(1.2rem, 3vw, var(--space-4));
-  max-width: 540px;
-  width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-  animation: modalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  z-index: 2001;
+.gallery-nav:hover {
+  background: rgba(0, 0, 0, 0.8);
 }
-
-.modal-content::-webkit-scrollbar {
-  width: 8px;
-}
-
-.modal-content::-webkit-scrollbar-track {
-  background: var(--navy-deep);
-  border-radius: 4px;
-}
-
-.modal-content::-webkit-scrollbar-thumb {
-  background: var(--gold);
-  border-radius: 4px;
-}
-
-.modal-content::-webkit-scrollbar-thumb:hover {
-  background: var(--gold-bright);
-}
+.gallery-nav--prev { left: 0.5rem; }
+.gallery-nav--next { right: 0.5rem; }
 
 .close-btn {
   position: absolute;
-  top: 1rem;
-  right: 1.2rem;
+  top: 1.2rem;
+  right: 1.5rem;
   background: transparent;
   border: none;
-  color: var(--white-dim);
-  font-size: 1.25rem;
+  color: var(--text-muted);
+  font-size: 1.3rem;
   cursor: pointer;
-  transition: color 0.2s ease;
+  z-index: 10;
 }
-
-.close-btn:hover {
-  color: var(--gold);
-}
-
-.modal-subtitle {
-  color: var(--gold);
-  font-size: 0.9rem;
-  margin-top: 0.3em;
-  margin-bottom: var(--space-3);
-}
+.modal-subtitle { color: var(--blue-accent); margin: 0.4rem 0 1.2rem; font-size: 0.9rem; }
 
 .modal-gallery {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-2);
-  margin-bottom: var(--space-3);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
-
 .modal-gallery img {
   width: 100%;
-  height: 120px;
+  height: 160px;
   object-fit: cover;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--royal-line);
+  border: 1px solid var(--border-color);
+  transition: transform 0.2s ease;
+}
+.modal-gallery img:hover {
+  transform: scale(1.03);
 }
 
-.modal-address {
-  margin: 0.5em 0 var(--space-3);
-  font-size: 0.95rem;
-}
-
-.modal-directions-btn {
-  width: 100%;
-  text-align: center;
-}
-
-.cell-modal-location {
-  color: var(--gold);
-  font-weight: 600;
-  margin-top: 0.5em;
-  font-size: 1rem;
-}
-
-.cell-modal-details {
-  margin-top: var(--space-2);
-  line-height: 1.5;
-  font-size: 0.95rem;
-}
-
-.cell-modal-time-box {
-  margin-top: var(--space-3);
-  background: var(--navy-deep);
-  border-left: 3px solid var(--gold);
-  padding: var(--space-2);
-  border-radius: var(--radius-sm);
-}
-
-.cell-modal-time-box p {
-  color: var(--white);
-  font-size: 0.88rem;
-}
-
-/* Footer Section */
+/* ==========================================================================
+   FOOTER MATCHING REFERENCE (DARK TRANSPARENT OVERLAY + FULL COLOR IMAGE + WHITE TEXT)
+   ========================================================================== */
 .site-footer {
-  background: var(--navy-deep);
-  padding: clamp(2.5rem, 5vw, var(--space-5)) clamp(1rem, 3vw, var(--space-4)) var(--space-3);
-  border-top: 1px solid var(--royal-line);
-  width: 100%;
-  position: relative;
-  z-index: 1;
+  position: relative !important;
+  background: url('/worship.jpg') center center / cover no-repeat !important;
+  color: #FFFFFF !important;
+  padding: 5rem 5% 2rem !important;
+  overflow: hidden !important;
+}
+
+.site-footer-overlay {
+  position: absolute !important;
+  inset: 0 !important;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.72) 0%, rgba(15, 23, 42, 0.88) 100%) !important;
+  z-index: 0 !important;
+}
+
+.footer-content, 
+.footer-bottom {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.pre-footer-cta { max-width: var(--max-width); margin: 0 auto; text-align: center; padding: 5rem 1rem; }
+.pre-footer-cta h2 { font-size: clamp(1.8rem, 3.5vw, 2.5rem); margin-bottom: 1rem; color: var(--gold); }
+.pre-footer-cta p { margin-bottom: 2rem; font-size: 1.05rem; }
+
+.site-footer h3, 
+.site-footer h4 { 
+  color: #FFFFFF !important; 
 }
 
 .footer-content {
   max-width: var(--max-width);
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr;
-  gap: clamp(1.5rem, 3vw, var(--space-4));
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: 3rem;
 }
 
-.footer-info h3 { font-size: 1.15rem; letter-spacing: 0.03em; }
-.footer-info p { font-style: italic; color: var(--gold); margin-top: 0.4em; }
-
-.footer-links h4, .footer-social h4 {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--slate);
-  margin-bottom: var(--space-2);
+.footer-info p { 
+  color: #E2E8F0 !important; 
+  margin-top: 0.5rem; 
+  font-style: italic; 
 }
 
-.footer-links ul, .footer-social ul { display: flex; flex-direction: column; gap: 0.6em; }
-.footer-links a, .footer-social a { color: var(--white-dim); font-size: 0.92rem; transition: color 0.2s ease; }
-.footer-links a:hover, .footer-social a:hover { color: var(--gold); }
-.social-coming-soon { color: var(--slate); font-size: 0.92rem; }
-
-/* Social Icons Styling */
-.social-icons-list {
-  display: flex !important;
-  flex-direction: row !important;
-  gap: 0.9rem !important;
-  margin-top: 0.4rem;
+.footer-address { 
+  margin-top: 1rem; 
+  color: #CBD5E1 !important; 
+  font-size: 0.9rem; 
 }
 
-.social-icon {
-  width: 20px;
-  height: 20px;
-  color: var(--white-dim);
-  transition: color 0.2s ease, transform 0.2s ease;
+.footer-links h4, 
+.footer-social h4 { 
+  font-family: var(--font-mono); 
+  font-size: 0.7rem; 
+  letter-spacing: 0.14em; 
+  text-transform: uppercase; 
+  color: #94A3B8 !important; 
+  margin-bottom: 1.2rem; 
 }
 
-.social-icons-list a:hover .social-icon {
-  color: var(--gold);
-  transform: translateY(-2px);
+.footer-links ul { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 0.8rem; 
 }
 
-.footer-bottom {
-  max-width: var(--max-width);
-  margin: clamp(1.5rem, 3vw, var(--space-4)) auto 0;
-  padding-top: var(--space-3);
-  border-top: 1px solid var(--royal-line);
-  text-align: center;
-}
-.footer-bottom p { font-size: 0.8rem; color: var(--slate); }
-
-/* Keyframe Animations */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.footer-links a,
+.social-link-item { 
+  color: #CBD5E1 !important; 
+  font-size: 0.92rem; 
+  font-weight: 400;
+  transition: color 0.2s ease, transform 0.2s ease; 
 }
 
-@keyframes modalSlideUp {
-  from { opacity: 0; transform: translateY(20px) scale(0.98); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+.footer-links a:hover,
+.social-link-item:hover { 
+  color: #FFFFFF !important; 
+  transform: translateX(4px);
 }
 
-/* Mobile & Tablet Navigation Drawer */
+.social-links-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 0;
+}
+
+.social-link-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-bottom { 
+  max-width: var(--max-width); 
+  margin: 3rem auto 0; 
+  padding-top: 2rem; 
+  border-top: 1px solid rgba(255, 255, 255, 0.15) !important; 
+  text-align: center; 
+}
+
+.footer-bottom p { 
+  font-size: 0.85rem; 
+  color: #94A3B8 !important; 
+}
+
+/* RESPONSIVE DESIGN */
 @media (max-width: 960px) {
-  .mobile-menu-toggle {
-    display: flex;
-  }
-
-  .nav-cta {
-    display: none;
-  }
-
+  .mobile-menu-toggle { display: flex; }
+  .nav-cta { display: none; }
   .nav-links {
     position: fixed;
     top: 0;
@@ -1365,109 +904,35 @@ section {
     height: 100vh;
     width: 80%;
     max-width: 320px;
-    background-color: var(--navy-deep);
-    border-left: 1px solid var(--royal-line);
+    background-color: #FFFFFF;
+    border-left: 1px solid var(--border-color);
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 2rem;
+    gap: 1.8rem;
     transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.7);
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15);
     z-index: 1001;
   }
+  .nav-links.nav-active { right: 0; }
+  .gallery-grid, .departments-grid, .modal-gallery { grid-template-columns: 1fr; }
+  .footer-content { grid-template-columns: 1fr; gap: 2rem; }
 
-  .nav-links.nav-active {
-    right: 0;
+  .about-church-container {
+    grid-template-columns: 1fr;
+    align-items: center;
+    gap: 2rem;
   }
 
-  .nav-links a {
-    font-size: 1rem;
+  .about-church-text {
+    padding-bottom: 0;
   }
 
-  .nav-mobile-cta {
-    display: block;
-    width: 100%;
-    padding: 0 1.5rem;
-  }
-
-  .nav-mobile-cta .btn-primary {
-    width: 100%;
-  }
-}
-
-@media (max-width: 900px) {
-  .gallery-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 768px) {
-  .schedule-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .departments-grid { grid-template-columns: 1fr; }
-  .footer-content { grid-template-columns: 1fr; gap: var(--space-3); }
-  .leadership-cards { grid-template-columns: 1fr; }
-}
-
-@media (max-width: 640px) {
-  .hero-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .hero-actions .btn-primary,
-  .hero-actions .btn-secondary,
-  .recap-card .btn-light,
-  .media-card .btn-primary,
-  .contact-form button {
-    width: 100%;
+  .about-church-image {
     justify-content: center;
   }
 
-  .recap-card, .media-card, .sermons-archive-container { 
-    flex-direction: column; 
-    align-items: stretch; 
-    text-align: left; 
+  .about-church-image img {
+    max-height: 380px;
   }
-
-  .modal-gallery { grid-template-columns: 1fr; }
-  .pastor-bg-container { height: 320px; }
-}
-
-@media (max-width: 540px) {
-  .gallery-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html,
-  body,
-  .church-site {
-    scroll-behavior: auto !important;
-  }
-
-  .hero-section::before {
-    animation: none;
-  }
-
-  .cell-card:hover,
-  .brand-logo:hover {
-    transform: none;
-  }
-
-  .modal-overlay,
-  .modal-content {
-    animation: none;
-  }
-
-  .nav-links {
-    transition: none;
-  }
-}
-
-@media (max-width: 480px) {
-  .schedule-grid { grid-template-columns: 1fr; }
-  .cells-grid, .giving-grid { grid-template-columns: 1fr; }
-  .brand-sub { letter-spacing: 0.1em; }
-  .pastor-bg-container { height: 280px; }
 }
